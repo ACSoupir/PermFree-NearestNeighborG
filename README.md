@@ -125,6 +125,10 @@ The full test suite runs in about two seconds, and every test carries a hard
 time budget (see `tests/testthat/helper-enumeration.R`). The closed forms are
 verified against exhaustive enumeration to machine precision.
 
+The pkgdown site is built locally and committed under `docs/`, which GitHub
+Pages serves directly (source: branch `dev`, folder `/docs`); there is no
+deployment workflow to maintain. Rebuild it with `pkgdown::build_site()`.
+
 ## Citation
 
 Soupir AC, Manley BJ, Peres LC, Fridley BL, Wrobel J. *Exact Expectation of

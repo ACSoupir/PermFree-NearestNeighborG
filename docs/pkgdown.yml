@@ -1,0 +1,12 @@
+pandoc: 3.9.0.2
+pkgdown: 2.2.1
+pkgdown_sha: ~
+articles:
+  derivation-bivariate: derivation-bivariate.html
+  derivation-univariate: derivation-univariate.html
+  edge-corrections: edge-corrections.html
+  getting-started: getting-started.html
+last_built: 2026-10-09T17:48Z
+urls:
+  reference: https://acsoupir.github.io/PermFree-NearestNeighborG/reference
+  article: https://acsoupir.github.io/PermFree-NearestNeighborG/articles

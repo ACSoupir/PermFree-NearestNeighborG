@@ -14,8 +14,9 @@ src/*.dll
 .RData
 .Rproj.user/
 
-# pkgdown / vignette build output
-docs/
+# pkgdown / vignette build output.
+# NOTE: docs/ is intentionally tracked -- it is the committed GitHub Pages site
+# (Pages source: branch dev, folder /docs). Rebuild with pkgdown::build_site().
 _site/
 inst/doc/*.html
 
@@ -27,7 +28,6 @@ tools/Makevars.local
 
 # local R cache (pkgdown/sass)
 .cache/
-docs/
 
 # package tarballs
 *.tar.gz
