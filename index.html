@@ -169,6 +169,14 @@ exact_gcross(data, radii = radii, mark_col = "m", marks_i = "A",
 <p>The original paper scripts are preserved under <code>inst/legacy/</code> for provenance.</p>
 </div>
 <div class="section level2">
+<h2 id="development">Development<a class="anchor" aria-label="anchor" href="#development"></a>
+</h2>
+<p>The package compiles a small Rcpp engine. On machines where the ambient C++ compiler is not usable, route build and test commands through the helper, which puts the Apple toolchain first on PATH and points R at a project-local Makevars:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">tools/with-toolchain.sh</span> Rscript <span class="at">-e</span> <span class="st">'devtools::test()'</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="ex">tools/with-toolchain.sh</span> R CMD check <span class="at">--no-manual</span> permfreeG_0.1.0.tar.gz</span></code></pre></div>
+<p>The full test suite runs in about two seconds, and every test carries a hard time budget (see <code>tests/testthat/helper-enumeration.R</code>). The closed forms are verified against exhaustive enumeration to machine precision.</p>
+</div>
+<div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
 <p>Soupir AC, Manley BJ, Peres LC, Fridley BL, Wrobel J. <em>Exact Expectation of Complete Spatial Randomness for Nearest Neighbor G(r): A Scalable Alternative to Permutations.</em> bioRxiv 2025.06.11.659088.</p>

@@ -220,7 +220,7 @@ t_approx <- system.time(
 c(N = N, radii = length(grid), exact_seconds = t_exact,
   approx_seconds = t_approx)
 #>              N          radii  exact_seconds approx_seconds 
-#>        250.000        151.000          0.037          0.009
+#>        250.000        151.000          0.037          0.010
 ```
 
 ## Where the theory lives
