@@ -16,176 +16,278 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
 This vignette proves, without reference to any code, the closed-form mean and
-variance of the univariate nearest-neighbour \eqn{G} function under the
+variance of the univariate nearest-neighbour ${G$ function under the
 mark-permutation null.  The bivariate case is proved in the companion vignette
 "Derivation: bivariate Gcross", and the edge corrections are derived as a
 supplement in "Edge corrections".
 
 ## 1. The null model and the statistic
 
-Let \eqn{X = \{x_1, \dots, x_N\} \subset \mathbb{R}^2} be the observed spatial
+Let ${X = \{x_1, \dots, x_N\} \subset \mathbb{R}^2$ be the observed spatial
 locations.  These are held **fixed**.  A mark (for example a positive cell
-phenotype) is assigned to exactly \eqn{n} of them, and the null hypothesis of
+phenotype) is assigned to exactly ${n$ of them, and the null hypothesis of
 complete spatial randomness (CSR) for the marks says that every assignment is
 equally likely.  Equivalently, the marked set
 
-\deqn{S \sim \mathrm{Uniform}\{\textstyle T \subset X : |T| = n\}}
 
-is a uniformly random \eqn{n}-subset of the \eqn{N} locations.
 
-For \eqn{r \ge 0} write
-\deqn{d(p, A) = \min_{q \in A} \|x_p - x_q\|}
-for a point \eqn{p} and a set \eqn{A}, and define the sample nearest-neighbour
-distance of \eqn{p} within \eqn{S} as \eqn{d(p, S \setminus \{p\})}.  The
-univariate \eqn{G} statistic is the empirical distribution function of those
+$$
+{S \sim \mathrm{Uniform}\{\textstyle T \subset X : |T| = n\}
+$$
+
+
+
+is a uniformly random ${n$-subset of the ${N$ locations.
+
+For ${r \ge 0$ write
+
+
+$$
+{d(p, A) = \min_{q \in A} \|x_p - x_q\|
+$$
+
+
+for a point ${p$ and a set ${A$, and define the sample nearest-neighbour
+distance of ${p$ within ${S$ as ${d(p, S \setminus \{p\})$.  The
+univariate ${G$ statistic is the empirical distribution function of those
 distances over the marked set,
 
-\deqn{G_S(r) \;=\; \frac{1}{n} \sum_{p \in S}
-  \mathbf{1}\!\left\{ d(p, S \setminus \{p\}) \le r \right\}.}
 
-Throughout we use the closed convention "\eqn{\le r}", which is exactly what
+
+$$
+{G_S(r) \;=\; \frac{1}{n} \sum_{p \in S}
+  \mathbf{1}\!\left\{ d(p, S \setminus \{p\}) \le r \right\}.
+$$
+
+
+
+Throughout we use the closed convention "${\le r$", which is exactly what
 spatstat.explore::Gest() computes; the difference from a strict inequality is a
 null set for continuous locations.
 
 ## 2. Indicator decomposition
 
-The key step replaces the average over \eqn{S} by a sum of point indicators.
-For each location \eqn{p \in X} put
+The key step replaces the average over ${S$ by a sum of point indicators.
+For each location ${p \in X$ put
 
-\deqn{A_p(r) = \{ q \neq p : \|x_p - x_q\| \le r\}, \qquad m_p(r) = |A_p(r)|,}
+
+
+$$
+{A_p(r) = \{ q \neq p : \|x_p - x_q\| \le r\}, \qquad m_p(r) = |A_p(r)|,
+$$
+
+
 
 and
 
-\deqn{X_p \;=\; \mathbf{1}\{ p \in S \} \cdot
-  \mathbf{1}\!\left\{ A_p(r) \cap S \neq \emptyset \right\}.}
+
+
+$$
+{X_p \;=\; \mathbf{1}\{ p \in S \} \cdot
+  \mathbf{1}\!\left\{ A_p(r) \cap S \neq \emptyset \right\}.
+$$
+
+
 
 Then
 
-\deqn{G_S(r) \;=\; \frac{1}{n} \sum_{p = 1}^{N} X_p.}
 
-Indeed, the term for \eqn{p} is one precisely when \eqn{p} belongs to the marked
-set and some other selected point lies within distance \eqn{r}; dividing by
-\eqn{n = |S|} turns the count into the proportion of marked points that have a
+
+$$
+{G_S(r) \;=\; \frac{1}{n} \sum_{p = 1}^{N} X_p.
+$$
+
+
+
+Indeed, the term for ${p$ is one precisely when ${p$ belongs to the marked
+set and some other selected point lies within distance ${r$; dividing by
+${n = |S|$ turns the count into the proportion of marked points that have a
 neighbour.
 
 ## 3. The avoidance table
 
 All moments below are built from one combinatorial quantity.  For integers
-\eqn{B \ge s \ge 0} and \eqn{0 \le k \le B}, define
+${B \ge s \ge 0$ and ${0 \le k \le B$, define
 
-\deqn{T_{B,s}(k) \;=\; \frac{\binom{B-k}{s}}{\binom{B}{s}},
-  \qquad T_{B,s}(k) := 0 \text{ whenever } B - k < s.}
 
-\eqn{T_{B,s}(k)} is the probability that a uniformly drawn \eqn{s}-subset of a
-set with \eqn{B} elements avoids \eqn{k} prescribed elements.  The package
+
+$$
+{T_{B,s}(k) \;=\; \frac{\binom{B-k}{s}}{\binom{B}{s}},
+  \qquad T_{B,s}(k) := 0 \text{ whenever } B - k < s.
+$$
+
+
+
+${T_{B,s}(k)$ is the probability that a uniformly drawn ${s$-subset of a
+set with ${B$ elements avoids ${k$ prescribed elements.  The package
 precomputes it once per analysis from logarithms of the gamma function, which is
 why no binomial coefficients are ever formed explicitly.
 
-**Lemma 1 (avoidance).** Let \eqn{S} be a uniform \eqn{n}-subset of a set
-\eqn{X} with \eqn{|X| = N}, and let \eqn{M \subset X} with \eqn{|M| = m}.  Then
+**Lemma 1 (avoidance).** Let ${S$ be a uniform ${n$-subset of a set
+${X$ with ${|X| = N$, and let ${M \subset X$ with ${|M| = m$.  Then
 
-\deqn{\Pr(S \cap M = \emptyset) \;=\; T_{N,n}(m)
-  \;=\; \frac{\binom{N-m}{n}}{\binom{N}{n}}.}
 
-*Proof.*  Choosing \eqn{S} uniformly is equivalent to choosing its complement
-\eqn{X \setminus S}, a uniform \eqn{(N-n)}-subset, and
-\eqn{S \cap M = \emptyset} holds exactly when that complement contains all of
-\eqn{M}.  The number of \eqn{(N-n)}-subsets containing a fixed \eqn{m}-set is
-\eqn{\binom{N-m}{N-n} = \binom{N-m}{(N-m)-(N-n)} = \binom{N-m}{n}}; dividing by
-\eqn{\binom{N}{N-n} = \binom{N}{n}} gives the claim.  Both sides are zero when
-\eqn{N - m < n}. \eqn{\square}
+
+$$
+{\Pr(S \cap M = \emptyset) \;=\; T_{N,n}(m)
+  \;=\; \frac{\binom{N-m}{n}}{\binom{N}{n}}.
+$$
+
+
+
+*Proof.*  Choosing ${S$ uniformly is equivalent to choosing its complement
+${X \setminus S$, a uniform ${(N-n)$-subset, and
+${S \cap M = \emptyset$ holds exactly when that complement contains all of
+${M$.  The number of ${(N-n)$-subsets containing a fixed ${m$-set is
+${\binom{N-m}{N-n} = \binom{N-m}{(N-m)-(N-n)} = \binom{N-m}{n}$; dividing by
+${\binom{N}{N-n} = \binom{N}{n}$ gives the claim.  Both sides are zero when
+${N - m < n$. ${\square$
 
 ## 4. Exact mean
 
 **Theorem 1 (mean).** With the notation of Section 2,
 
-\deqn{\mathbb{E}\big[G_S(r)\big] \;=\; \frac{1}{N} \sum_{p=1}^{N}
-  \Big( 1 - T_{N-1,\,n-1}\big(m_p(r)\big) \Big).}
+
+
+$$
+{\mathbb{E}\big[G_S(r)\big] \;=\; \frac{1}{N} \sum_{p=1}^{N}
+  \Big( 1 - T_{N-1,\,n-1}\big(m_p(r)\big) \Big).
+$$
+
+
 
 *Proof.*  By linearity and the decomposition of Section 2,
 
-\deqn{\mathbb{E}[G_S(r)] = \frac{1}{n} \sum_{p=1}^{N} \Pr(X_p = 1).}
 
-Fix \eqn{p}.  Since \eqn{\Pr(p \in S) = n/N}, the multiplication rule gives
 
-\deqn{\Pr(X_p = 1) = \frac{n}{N}\,
-  \Pr\!\left(A_p(r) \cap S = \emptyset \,\middle|\, p \in S\right).}
+$$
+{\mathbb{E}[G_S(r)] = \frac{1}{n} \sum_{p=1}^{N} \Pr(X_p = 1).
+$$
 
-Conditional on \eqn{p \in S}, the remaining members of \eqn{S} form a uniform
-\eqn{(n-1)}-subset of the \eqn{N-1} locations in \eqn{X \setminus \{p\}}, and
-\eqn{A_p(r)} is a fixed subset of that ground set with \eqn{m_p} elements.
+
+
+Fix ${p$.  Since ${\Pr(p \in S) = n/N$, the multiplication rule gives
+
+
+
+$$
+{\Pr(X_p = 1) = \frac{n}{N}\,
+  \Pr\!\left(A_p(r) \cap S = \emptyset \,\middle|\, p \in S\right).
+$$
+
+
+
+Conditional on ${p \in S$, the remaining members of ${S$ form a uniform
+${(n-1)$-subset of the ${N-1$ locations in ${X \setminus \{p\}$, and
+${A_p(r)$ is a fixed subset of that ground set with ${m_p$ elements.
 Lemma 1 therefore gives
 
-\deqn{\Pr\!\left(A_p(r) \cap S = \emptyset \,\middle|\, p \in S\right)
-  = T_{N-1,\,n-1}(m_p).}
 
-Substituting and using \eqn{(n/N)\cdot(1/n) = 1/N} completes the proof.
-\eqn{\square}
+
+$$
+{\Pr\!\left(A_p(r) \cap S = \emptyset \,\middle|\, p \in S\right)
+  = T_{N-1,\,n-1}(m_p).
+$$
+
+
+
+Substituting and using ${(n/N)\cdot(1/n) = 1/N$ completes the proof.
+${\square$
 
 Two immediate consequences are worth recording.
 
 * The mean is **sample-specific**: it depends on the observed locations through
-  the neighbour counts \eqn{m_p(r)} alone.
+  the neighbour counts ${m_p(r)$ alone.
 * It never depends on which locations happen to carry the mark, only on
-  \eqn{n}; relabelling the marks leaves \eqn{\mathbb{E}[G_S(r)]} unchanged.
+  ${n$; relabelling the marks leaves ${\mathbb{E}[G_S(r)]$ unchanged.
 
 ## 5. Exact second moments
 
 For the variance we need both marginal and joint probabilities.
 
-**Lemma 2 (pair inclusion).** For distinct locations \eqn{p, q},
-\deqn{\Pr(p \in S,\; q \in S) = \frac{n(n-1)}{N(N-1)} \;=:\; c_2 .}
+**Lemma 2 (pair inclusion).** For distinct locations ${p, q$,
 
-*Proof.*  There are \eqn{\binom{N}{n}} equally likely marked sets; those
-containing both \eqn{p} and \eqn{q} number \eqn{\binom{N-2}{n-2}}.  The ratio is
-\eqn{n(n-1)/[N(N-1)]}. \eqn{\square}
 
-**Lemma 3 (joint emptiness).** Let \eqn{p \neq q} and suppose
-\eqn{\|x_p - x_q\| > r}, so that \eqn{q \notin A_p(r)} and
-\eqn{p \notin A_q(r)}.  Write \eqn{w_{pq} = |A_p(r) \cap A_q(r)|}.  Then
+$$
+{\Pr(p \in S,\; q \in S) = \frac{n(n-1)}{N(N-1)} \;=:\; c_2 .
+$$
 
-\deqn{\Pr\!\left(A_p \cap S = A_q \cap S = \emptyset
+
+
+*Proof.*  There are ${\binom{N}{n}$ equally likely marked sets; those
+containing both ${p$ and ${q$ number ${\binom{N-2}{n-2}$.  The ratio is
+${n(n-1)/[N(N-1)]$. ${\square$
+
+**Lemma 3 (joint emptiness).** Let ${p \neq q$ and suppose
+${\|x_p - x_q\| > r$, so that ${q \notin A_p(r)$ and
+${p \notin A_q(r)$.  Write ${w_{pq} = |A_p(r) \cap A_q(r)|$.  Then
+
+
+
+$$
+{\Pr\!\left(A_p \cap S = A_q \cap S = \emptyset
   \,\middle|\, p, q \in S\right)
   = T_{N-2,\,n-2}(m_p) + T_{N-2,\,n-2}(m_q)
-    - T_{N-2,\,n-2}\!\left(m_p + m_q - w_{pq}\right).}
+    - T_{N-2,\,n-2}\!\left(m_p + m_q - w_{pq}\right).
+$$
 
-*Proof.*  Conditional on \eqn{p, q \in S}, the other marked locations form a
-uniform \eqn{(n-2)}-subset of the remaining \eqn{N-2} locations.  Both
-\eqn{A_p(r)} and \eqn{A_q(r)} are fixed subsets of that ground set, of sizes
-\eqn{m_p} and \eqn{m_q}, with intersection of size \eqn{w_{pq}}.  The event that
-\eqn{S} meets neither set is the complement of "meets \eqn{A_p}" or "meets
-\eqn{A_q}", and the union has size \eqn{m_p + m_q - w_{pq}}.  Applying Lemma 1
-to each of the three sets gives the stated expression. \eqn{\square}
+
+
+*Proof.*  Conditional on ${p, q \in S$, the other marked locations form a
+uniform ${(n-2)$-subset of the remaining ${N-2$ locations.  Both
+${A_p(r)$ and ${A_q(r)$ are fixed subsets of that ground set, of sizes
+${m_p$ and ${m_q$, with intersection of size ${w_{pq}$.  The event that
+${S$ meets neither set is the complement of "meets ${A_p$" or "meets
+${A_q$", and the union has size ${m_p + m_q - w_{pq}$.  Applying Lemma 1
+to each of the three sets gives the stated expression. ${\square$
 
 Combining Lemmas 2 and 3,
 
-\deqn{\mathbb{E}[X_p X_q] =
+
+
+$$
+{\mathbb{E}[X_p X_q] =
 \begin{cases}
 c_2, & \|x_p - x_q\| \le r,\\[4pt]
 c_2\Big(1 - T_{N-2,n-2}(m_p) - T_{N-2,n-2}(m_q)
    + T_{N-2,n-2}(m_p + m_q - w_{pq})\Big), & \|x_p - x_q\| > r.
-\end{cases}}
+\end{cases}
+$$
 
-The first case is immediate: if \eqn{q} itself lies within distance \eqn{r} of
-\eqn{p}, then selecting both already guarantees that each has a neighbour, so
+
+
+The first case is immediate: if ${q$ itself lies within distance ${r$ of
+${p$, then selecting both already guarantees that each has a neighbour, so
 the conditional probability of two hits is one.
 
 **Theorem 2 (variance).**
 
-\deqn{\mathrm{Var}\big(G_S(r)\big) \;=\; \frac{1}{n^2}
-  \left[ \sum_{p=1}^{N} e_p (1 - e_p)
-       + 2 \sum_{p < q} \big( f_{pq} - e_p\, e_q \big) \right],}
 
-where \eqn{e_p = \mathbb{E}[X_p] = (n/N)\big(1 - T_{N-1,n-1}(m_p)\big)} and
-\eqn{f_{pq} = \mathbb{E}[X_p X_q]} is given above.
+
+$$
+{\mathrm{Var}\big(G_S(r)\big) \;=\; \frac{1}{n^2}
+  \left[ \sum_{p=1}^{N} e_p (1 - e_p)
+       + 2 \sum_{p < q} \big( f_{pq} - e_p\, e_q \big) \right],
+$$
+
+
+
+where ${e_p = \mathbb{E}[X_p] = (n/N)\big(1 - T_{N-1,n-1}(m_p)\big)$ and
+${f_{pq} = \mathbb{E}[X_p X_q]$ is given above.
 
 *Proof.*  Expand the square of the sum:
 
-\deqn{n^2 \,\mathrm{Var}(G_S) = \sum_p \mathrm{Var}(X_p)
-  + 2\sum_{p<q} \big(\mathbb{E}[X_p X_q] - e_p e_q\big),}
 
-because the indicators are Bernoulli, so \eqn{\mathrm{Var}(X_p) = e_p(1-e_p)},
-and covariance is bilinear. \eqn{\square}
+
+$$
+{n^2 \,\mathrm{Var}(G_S) = \sum_p \mathrm{Var}(X_p)
+  + 2\sum_{p<q} \big(\mathbb{E}[X_p X_q] - e_p e_q\big),
+$$
+
+
+
+because the indicators are Bernoulli, so ${\mathrm{Var}(X_p) = e_p(1-e_p)$,
+and covariance is bilinear. ${\square$
 
 The result is **exact** for every finite sample: no asymptotic approximation,
 no independence assumption and no simulation are used.  The only numerical
@@ -193,27 +295,33 @@ input is the avoidance table, computed in log space.
 
 ## 6. Computational cost
 
-Computing all \eqn{m_p(r)} costs one pass over the \eqn{\binom{N}{2}} pairs per
+Computing all ${m_p(r)$ costs one pass over the ${\binom{N}{2}$ pairs per
 radius.  The double sum has one term per pair as well, but each needs the
-intersection size \eqn{w_{pq} = |A_p(r) \cap A_q(r)|}.  Storing each
-\eqn{A_p(r)} as a packed bit set of \eqn{\lceil N/64\rceil} machine words and
-using a population count makes each intersection \eqn{O(N/64)} rather than
-\eqn{O(N)}, so the total work is
+intersection size ${w_{pq} = |A_p(r) \cap A_q(r)|$.  Storing each
+${A_p(r)$ as a packed bit set of ${\lceil N/64\rceil$ machine words and
+using a population count makes each intersection ${O(N/64)$ rather than
+${O(N)$, so the total work is
 
-\deqn{O\!\left( R\, N^2 \,\big/\, 64 + R\, N^2 \right)}
 
-for \eqn{R} radii.  The original implementation instead called a binomial
+
+$$
+{O\!\left( R\, N^2 \,\big/\, 64 + R\, N^2 \right)
+$$
+
+
+
+for ${R$ radii.  The original implementation instead called a binomial
 coefficient routine inside the inner loop, which is what made the exact variance
-prohibitive for large \eqn{N}.
+prohibitive for large ${N$.
 
 If only a rough scale is needed, setting covariance = FALSE keeps the diagonal
-term and drops \eqn{2\sum (f_{pq} - e_pe_q)}; this is the "independent points"
-approximation.  It costs \eqn{O(RN)} after the neighbour counts are known.
+term and drops ${2\sum (f_{pq} - e_pe_q)$; this is the "independent points"
+approximation.  It costs ${O(RN)$ after the neighbour counts are known.
 
 ## 7. Numerical illustration
 
 The following small example checks Theorem 1 and Theorem 2 against *exhaustive
-enumeration* of all \eqn{\binom{10}{4} = 210} marked sets.
+enumeration* of all ${\binom{10}{4} = 210$ marked sets.
 
 ```{r enumeration, message = FALSE}
 suppressPackageStartupMessages(library(permfreeG))

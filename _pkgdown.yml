@@ -1,6 +1,7 @@
 url: https://acsoupir.github.io/PermFree-NearestNeighborG/
 template:
   bootstrap: 5
+  math-rendering: katex
 development:
   mode: auto
 reference:
