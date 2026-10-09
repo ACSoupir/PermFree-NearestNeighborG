@@ -1,0 +1,249 @@
+# permfreeG
+
+**Exact, permutation-free mean and variance of the nearest-neighbour G
+function under complete spatial randomness.**
+
+Instead of approximating a null distribution with thousands of random
+permutations, **permfreeG** evaluates the mean and variance of the
+permutation null in closed form. A null band, pointwise z-scores and
+p-values are therefore available immediately, with no Monte Carlo error.
+
+## The result in one line
+
+Let `X = {x_1, ..., x_N}` be fixed locations and let the marked set S be
+a uniformly random n-subset of X. Writing
+
+- m_p(r) for the number of locations within distance r of p,
+- T(B, s)(k) = C(B - k, s) / C(B, s), the probability that a uniform
+  s-subset avoids k prescribed elements (the “avoidance table”),
+- e_p = (n / N) (1 - T(N-1, n-1)(m_p)),
+- f_pq = E\[X_p X_q\] as given in the vignettes,
+
+the univariate G statistic satisfies
+
+``` R
+E[G_S(r)]  = (1/N) sum_p [ 1 - T(N-1, n-1)(m_p(r)) ]
+
+Var(G_S(r)) = (1/n^2) [ sum_p e_p (1 - e_p)
+                        + 2 sum_{p<q} ( f_pq - e_p e_q ) ],
+```
+
+and the bivariate cross statistic G_ij satisfies
+
+``` R
+E[G_ij(r)] = (1/N) sum_p [ 1 - T(N-1, n_j)(m_p(r)) ],
+```
+
+with a variance of the same form using c2 = n_i (n_i - 1) / (N (N - 1)).
+The full derivations, with proofs and no code required, are in the
+vignettes.
+
+Both formulas are exact for every finite sample. The only numerical
+ingredient is the avoidance table, computed once per analysis in log
+space.
+
+## Installation
+
+`{r install, eval = FALSE} # development version remotes::install_github("ACSoupir/PermFree-NearestNeighborG", ref = "dev", build_vignettes = TRUE)`
+
+The package compiles a small C++ engine through Rcpp. On macOS, make
+sure an Apple (not Anaconda) compiler is first on the PATH before
+installing.
+
+## Quick start
+
+\`\`\`{r example} library(permfreeG)
+
+# 30 points, 5 marked: exactly C(30, 5) = 142506 subsets
+
+radii \<- seq(0, 1.2, by = 0.15) res \<- exact_gest(sim_nnG, radii =
+radii, mark_col = “m”, marks_i = “A”) as.data.frame(res)
+
+plot(res)
+
+
+    The returned object has one row per radius with columns `r`, `theo`,
+    `obs`, `csr_mean`, `csr_var`, `z` and `p_value`.
+
+    For two marks, use
+
+    ```{r cross, eval = FALSE}
+    exact_gcross(data, radii = radii, mark_col = "m", marks_i = "A",
+                 marks_j = "B")
+
+## Edge corrections
+
+| correction | null mean | null variance |
+|----|----|----|
+| `none` (raw) | exact | **exact** |
+| `rs` (border / reduced sample) | ratio of exact expectations | delta method from exact moments |
+| `han` (Hanisch) | mean-field using exact expected bin counts | not available; use [`permute_gest()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/permute_gest.md) |
+| `km` (Kaplan-Meier) | mean-field using exact expected bin counts | not available; use [`permute_gest()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/permute_gest.md) |
+
+Only `correction = "none"` is fully exact; the others are labelled in
+the returned object and derived honestly, with their approximations
+stated, in the edge-corrections vignette.
+
+## Speed
+
+Neighbour sets are stored as packed 64-bit bit sets, so the intersection
+of two neighbourhoods is a population count over N/64 words rather than
+a set operation. The complete exact variance curve for 250 points at 151
+radii takes well under a second, and `covariance = FALSE` gives an even
+faster independent-points approximation.
+
+## Vignettes
+
+- **Derivation: univariate Gest** - full proof of the mean and variance.
+- **Derivation: bivariate Gcross** - conditioning lemma, disjoint
+  permutation, full proof.
+- **Supplement: edge corrections** - none / rs / han / km, with
+  derivations and a table of what is exact.
+- **Getting started** - usage, approximations, permutation fallback and
+  scaling.
+
+## Data
+
+The proprietary mIF validation data analysed in the paper is **not**
+part of this repository. A small synthetic example, `sim_nnG`, is
+shipped instead; it can be regenerated with `data-raw/make-sim.R`.
+
+The original paper scripts are preserved under `inst/legacy/` for
+provenance.
+
+## Citation
+
+Soupir AC, Manley BJ, Peres LC, Fridley BL, Wrobel J. *Exact Expectation
+of Complete Spatial Randomness for Nearest Neighbor G(r): A Scalable
+Alternative to Permutations.* bioRxiv 2025.06.11.659088.
+
+# Package index
+
+## Exact permutation-free CSR
+
+Main entry points. These compute the exact null mean and variance.
+
+- [`exact_gest()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/exact_gest.md)
+  : Permutation-free exact CSR for the univariate nearest-neighbour G
+  function
+- [`exact_gcross()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/exact_gcross.md)
+  : Permutation-free exact CSR for bivariate cross nearest-neighbour G
+
+## Permutation reference
+
+Exact-by-simulation fallbacks, used to validate the closed forms.
+
+- [`permute_gest()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/permute_gest.md)
+  : Permutation null for the univariate G function
+- [`permute_gcross()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/permute_gcross.md)
+  : Permutation null for bivariate cross G
+
+## Result object methods
+
+- [`as.data.frame(`*`<nnG>`*`)`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/nnG-methods.md)
+  [`print(`*`<nnG>`*`)`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/nnG-methods.md)
+  [`summary(`*`<nnG>`*`)`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/nnG-methods.md)
+  [`plot(`*`<nnG>`*`)`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/nnG-methods.md)
+  : Methods for nnG objects
+
+## Example data
+
+- [`sim_nnG`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/sim_nnG.md)
+  : Synthetic two-type point pattern
+
+## Internal helpers
+
+Not exported; used inside the package and by the test suite.
+
+- [`avoid_table()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/avoid_table.md)
+  : Avoidance table
+
+- [`censored_neighbor_counts_cpp()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/censored_neighbor_counts_cpp.md)
+  : Neighbour counts within min(radius, boundary distance)
+
+- [`counts_within_bdist_cpp()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/counts_within_bdist_cpp.md)
+  : Number of neighbours closer than the window boundary
+
+- [`csr_cross_moments_cpp()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/csr_cross_moments_cpp.md)
+  : Exact bivariate Gcross CSR mean and variance
+
+- [`csr_moments_r()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/csr_moments_r.md)
+  : Reference implementation of exact CSR moments (pure R)
+
+- [`csr_uni_moments_cpp()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/csr_uni_moments_cpp.md)
+  : Exact univariate CSR mean and variance
+
+- [`.analytic_moments()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/dot-analytic_moments.md)
+  : Analytic CSR moments for one edge correction
+
+- [`.check_radii()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/dot-check_radii.md)
+  : Resolve the radius grid used by spatstat
+
+- [`.gcross_fv()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/dot-gcross_fv.md)
+  : Observed fv object for a bivariate correction
+
+- [`.gest_fv()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/dot-gest_fv.md)
+  : Observed fv object for a correction
+
+- [`.lapply_cores()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/dot-lapply_cores.md)
+  : Parallel lapply helper
+
+- [`.mark_levels()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/dot-mark_levels.md)
+  : Mark levels of a point pattern
+
+- [`.meanfield_moments()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/dot-meanfield_moments.md)
+  : Mean-field Hanisch / Kaplan-Meier CSR curve
+
+- [`.obs_col_name()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/dot-obs_col_name.md)
+  : Column name holding the observed curve for a correction
+
+- [`.obs_column()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/dot-obs_column.md)
+  : Pull the observed curve out of a spatstat fv object for one
+  correction
+
+- [`.prepare_ppp()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/dot-prepare_ppp.md)
+  : Coerce user data to a spatstat point pattern
+
+- [`.subset_mark()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/dot-subset_mark.md)
+  : Subset a point pattern to one mark level
+
+- [`log_comb()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/log_comb.md)
+  : Log binomial coefficient in log space
+
+- [`new_nnG()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/new_nnG.md)
+  :
+
+  Construct an `nnG` object
+
+- [`nn_counts_cpp()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/nn_counts_cpp.md)
+  : Neighbour counts within each radius (\<= r)
+
+- [`permfreeG`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/permfreeG-package.md)
+  [`permfreeG-package`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/permfreeG-package.md)
+  : permfreeG: Permutation-Free Exact Nearest-Neighbour G CSR
+
+- [`rs_moments_cpp()`](https://acsoupir.github.io/PermFree-NearestNeighborG/reference/rs_moments_cpp.md)
+  : Reduced-sample (border) CSR moments
+
+# Articles
+
+### Derivations
+
+Complete proofs; no code required.
+
+- [Derivation: exact mean and variance of the univariate
+  nearest-neighbour G
+  function](https://acsoupir.github.io/PermFree-NearestNeighborG/articles/derivation-univariate.md):
+- [Derivation: exact mean and variance of the bivariate cross
+  nearest-neighbour G
+  function](https://acsoupir.github.io/PermFree-NearestNeighborG/articles/derivation-bivariate.md):
+
+### Edge corrections
+
+- [Supplement: edge corrections for the permutation-free G
+  function](https://acsoupir.github.io/PermFree-NearestNeighborG/articles/edge-corrections.md):
+
+### Usage
+
+- [Getting started with
+  permfreeG](https://acsoupir.github.io/PermFree-NearestNeighborG/articles/getting-started.md):
