@@ -109,6 +109,22 @@ be regenerated with `data-raw/make-sim.R`.
 The original paper scripts are preserved under `inst/legacy/` for
 provenance.
 
+## Development
+
+The package compiles a small Rcpp engine. On machines where the ambient C++
+compiler is not usable, route build and test commands through the helper,
+which puts the Apple toolchain first on PATH and points R at a project-local
+Makevars:
+
+```sh
+tools/with-toolchain.sh Rscript -e 'devtools::test()'
+tools/with-toolchain.sh R CMD check --no-manual permfreeG_0.1.0.tar.gz
+```
+
+The full test suite runs in about two seconds, and every test carries a hard
+time budget (see `tests/testthat/helper-enumeration.R`). The closed forms are
+verified against exhaustive enumeration to machine precision.
+
 ## Citation
 
 Soupir AC, Manley BJ, Peres LC, Fridley BL, Wrobel J. *Exact Expectation of
