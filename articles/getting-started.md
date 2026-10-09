@@ -3,15 +3,15 @@
 ## What the package does
 
 permfreeG computes, in closed form, the mean and variance of the
-nearest-neighbour {G function under the mark-permutation null. Instead
-of simulating thousands of permutations, it evaluates the exact moments
+nearest-neighbour G function under the mark-permutation null. Instead of
+simulating thousands of permutations, it evaluates the exact moments
 directly, so a null band and pointwise z-scores are available
 immediately.
 
 Two statistics are covered:
 
-- exact_gest, the univariate nearest-neighbour {G;
-- exact_gcross, the bivariate cross nearest-neighbour {G\_{ij}.
+- exact_gest, the univariate nearest-neighbour G;
+- exact_gcross, the bivariate cross nearest-neighbour G\_{ij}.
 
 Both accept a data frame with columns x, y (and optionally a mark
 column) or an existing spatstat ppp object.
@@ -64,7 +64,7 @@ res_df <- as.data.frame(res)
 The returned object has one row per radius:
 
 - r, the radius;
-- theo, the theoretical CSR curve {G(r) = 1 - e^{-\lambda\pi r^2} using
+- theo, the theoretical CSR curve G(r) = 1 - e^{-\lambda\pi r^2} using
   the observed intensity;
 - obs, the observed curve for the marked points;
 - csr_mean and csr_var, the exact null mean and variance from Theorems
@@ -151,8 +151,8 @@ the full derivation of each option, including which parts are exact.
 Two knobs trade accuracy for time:
 
 - covariance = FALSE drops the off-diagonal covariance terms, keeping
-  only {\sum_p e_p(1-e_p)/n^2. This is the independent-points
-  approximation and costs {O(RN) once neighbour counts are known.
+  only \sum_p e_p(1-e_p)/n^2. This is the independent-points
+  approximation and costs O(RN) once neighbour counts are known.
 - method = “approx” is the same thing expressed through the public
   interface.
 
@@ -221,7 +221,7 @@ t_approx <- system.time(
 c(N = N, radii = length(grid), exact_seconds = t_exact,
   approx_seconds = t_approx)
 #>              N          radii  exact_seconds approx_seconds 
-#>        250.000        151.000          0.037          0.010
+#>        250.000        151.000          0.039          0.013
 ```
 
 ## Where the theory lives

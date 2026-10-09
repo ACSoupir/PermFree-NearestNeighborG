@@ -62,93 +62,93 @@
     
     
 <p>This vignette proves, without reference to any code, the closed-form
-mean and variance of the univariate nearest-neighbour <span class="math inline">{G</span> function under the mark-permutation null.
+mean and variance of the univariate nearest-neighbour <span class="math inline">G</span> function under the mark-permutation null.
 The bivariate case is proved in the companion vignette “Derivation:
 bivariate Gcross”, and the edge corrections are derived as a supplement
 in “Edge corrections”.</p>
 <div class="section level2">
 <h2 id="the-null-model-and-the-statistic">1. The null model and the statistic<a class="anchor" aria-label="anchor" href="#the-null-model-and-the-statistic"></a>
 </h2>
-<p>Let <span class="math inline">{X = \{x_1, \dots, x_N\} \subset
+<p>Let <span class="math inline">X = \{x_1, \dots, x_N\} \subset
 \mathbb{R}^2</span> be the observed spatial locations. These are held
 <strong>fixed</strong>. A mark (for example a positive cell phenotype)
-is assigned to exactly <span class="math inline">{n</span> of them, and
+is assigned to exactly <span class="math inline">n</span> of them, and
 the null hypothesis of complete spatial randomness (CSR) for the marks
 says that every assignment is equally likely. Equivalently, the marked
 set</p>
 <p><span class="math display">
-{S \sim \mathrm{Uniform}\{\textstyle T \subset X : |T| = n\}
+S \sim \mathrm{Uniform}\{\textstyle T \subset X : |T| = n\}
 </span></p>
-<p>is a uniformly random <span class="math inline">{n</span>-subset of
-the <span class="math inline">{N</span> locations.</p>
-<p>For <span class="math inline">{r \ge 0</span> write</p>
+<p>is a uniformly random <span class="math inline">n</span>-subset of
+the <span class="math inline">N</span> locations.</p>
+<p>For <span class="math inline">r \ge 0</span> write</p>
 <p><span class="math display">
-{d(p, A) = \min_{q \in A} \|x_p - x_q\|
+d(p, A) = \min_{q \in A} \|x_p - x_q\|
 </span></p>
-<p>for a point <span class="math inline">{p</span> and a set <span class="math inline">{A</span>, and define the sample nearest-neighbour
-distance of <span class="math inline">{p</span> within <span class="math inline">{S</span> as <span class="math inline">{d(p, S
-\setminus \{p\})</span>. The univariate <span class="math inline">{G</span> statistic is the empirical distribution
+<p>for a point <span class="math inline">p</span> and a set <span class="math inline">A</span>, and define the sample nearest-neighbour
+distance of <span class="math inline">p</span> within <span class="math inline">S</span> as <span class="math inline">d(p, S
+\setminus \{p\})</span>. The univariate <span class="math inline">G</span> statistic is the empirical distribution
 function of those distances over the marked set,</p>
 <p><span class="math display">
-{G_S(r) \;=\; \frac{1}{n} \sum_{p \in S}
+G_S(r) \;=\; \frac{1}{n} \sum_{p \in S}
   \mathbf{1}\!\left\{ d(p, S \setminus \{p\}) \le r \right\}.
 </span></p>
-<p>Throughout we use the closed convention “<span class="math inline">{\le r</span>”, which is exactly what
+<p>Throughout we use the closed convention “<span class="math inline">\le r</span>”, which is exactly what
 spatstat.explore::Gest() computes; the difference from a strict
 inequality is a null set for continuous locations.</p>
 </div>
 <div class="section level2">
 <h2 id="indicator-decomposition">2. Indicator decomposition<a class="anchor" aria-label="anchor" href="#indicator-decomposition"></a>
 </h2>
-<p>The key step replaces the average over <span class="math inline">{S</span> by a sum of point indicators. For each
-location <span class="math inline">{p \in X</span> put</p>
+<p>The key step replaces the average over <span class="math inline">S</span> by a sum of point indicators. For each
+location <span class="math inline">p \in X</span> put</p>
 <p><span class="math display">
-{A_p(r) = \{ q \neq p : \|x_p - x_q\| \le r\}, \qquad m_p(r) = |A_p(r)|,
+A_p(r) = \{ q \neq p : \|x_p - x_q\| \le r\}, \qquad m_p(r) = |A_p(r)|,
 </span></p>
 <p>and</p>
 <p><span class="math display">
-{X_p \;=\; \mathbf{1}\{ p \in S \} \cdot
+X_p \;=\; \mathbf{1}\{ p \in S \} \cdot
   \mathbf{1}\!\left\{ A_p(r) \cap S \neq \emptyset \right\}.
 </span></p>
 <p>Then</p>
 <p><span class="math display">
-{G_S(r) \;=\; \frac{1}{n} \sum_{p = 1}^{N} X_p.
+G_S(r) \;=\; \frac{1}{n} \sum_{p = 1}^{N} X_p.
 </span></p>
-<p>Indeed, the term for <span class="math inline">{p</span> is one
-precisely when <span class="math inline">{p</span> belongs to the marked
-set and some other selected point lies within distance <span class="math inline">{r</span>; dividing by <span class="math inline">{n
-= |S|</span> turns the count into the proportion of marked points that
+<p>Indeed, the term for <span class="math inline">p</span> is one
+precisely when <span class="math inline">p</span> belongs to the marked
+set and some other selected point lies within distance <span class="math inline">r</span>; dividing by <span class="math inline">n =
+|S|</span> turns the count into the proportion of marked points that
 have a neighbour.</p>
 </div>
 <div class="section level2">
 <h2 id="the-avoidance-table">3. The avoidance table<a class="anchor" aria-label="anchor" href="#the-avoidance-table"></a>
 </h2>
 <p>All moments below are built from one combinatorial quantity. For
-integers <span class="math inline">{B \ge s \ge 0</span> and <span class="math inline">{0 \le k \le B</span>, define</p>
+integers <span class="math inline">B \ge s \ge 0</span> and <span class="math inline">0 \le k \le B</span>, define</p>
 <p><span class="math display">
-{T_{B,s}(k) \;=\; \frac{\binom{B-k}{s}}{\binom{B}{s}},
+T_{B,s}(k) \;=\; \frac{\binom{B-k}{s}}{\binom{B}{s}},
   \qquad T_{B,s}(k) := 0 \text{ whenever } B - k &lt; s.
 </span></p>
-<p><span class="math inline">{T_{B,s}(k)</span> is the probability that
-a uniformly drawn <span class="math inline">{s</span>-subset of a set
-with <span class="math inline">{B</span> elements avoids <span class="math inline">{k</span> prescribed elements. The package
+<p><span class="math inline">T_{B,s}(k)</span> is the probability that a
+uniformly drawn <span class="math inline">s</span>-subset of a set with
+<span class="math inline">B</span> elements avoids <span class="math inline">k</span> prescribed elements. The package
 precomputes it once per analysis from logarithms of the gamma function,
 which is why no binomial coefficients are ever formed explicitly.</p>
-<p><strong>Lemma 1 (avoidance).</strong> Let <span class="math inline">{S</span> be a uniform <span class="math inline">{n</span>-subset of a set <span class="math inline">{X</span> with <span class="math inline">{|X| =
-N</span>, and let <span class="math inline">{M \subset X</span> with
-<span class="math inline">{|M| = m</span>. Then</p>
+<p><strong>Lemma 1 (avoidance).</strong> Let <span class="math inline">S</span> be a uniform <span class="math inline">n</span>-subset of a set <span class="math inline">X</span> with <span class="math inline">|X| =
+N</span>, and let <span class="math inline">M \subset X</span> with
+<span class="math inline">|M| = m</span>. Then</p>
 <p><span class="math display">
-{\Pr(S \cap M = \emptyset) \;=\; T_{N,n}(m)
+\Pr(S \cap M = \emptyset) \;=\; T_{N,n}(m)
   \;=\; \frac{\binom{N-m}{n}}{\binom{N}{n}}.
 </span></p>
-<p><em>Proof.</em> Choosing <span class="math inline">{S</span>
-uniformly is equivalent to choosing its complement <span class="math inline">{X \setminus S</span>, a uniform <span class="math inline">{(N-n)</span>-subset, and <span class="math inline">{S \cap M = \emptyset</span> holds exactly when that
-complement contains all of <span class="math inline">{M</span>. The
-number of <span class="math inline">{(N-n)</span>-subsets containing a
-fixed <span class="math inline">{m</span>-set is <span class="math inline">{\binom{N-m}{N-n} = \binom{N-m}{(N-m)-(N-n)} =
-\binom{N-m}{n}</span>; dividing by <span class="math inline">{\binom{N}{N-n} = \binom{N}{n}</span> gives the
-claim. Both sides are zero when <span class="math inline">{N - m &lt;
-n</span>. <span class="math inline">{\square</span></p>
+<p><em>Proof.</em> Choosing <span class="math inline">S</span> uniformly
+is equivalent to choosing its complement <span class="math inline">X
+\setminus S</span>, a uniform <span class="math inline">(N-n)</span>-subset, and <span class="math inline">S
+\cap M = \emptyset</span> holds exactly when that complement contains
+all of <span class="math inline">M</span>. The number of <span class="math inline">(N-n)</span>-subsets containing a fixed <span class="math inline">m</span>-set is <span class="math inline">\binom{N-m}{N-n} = \binom{N-m}{(N-m)-(N-n)} =
+\binom{N-m}{n}</span>; dividing by <span class="math inline">\binom{N}{N-n} = \binom{N}{n}</span> gives the
+claim. Both sides are zero when <span class="math inline">N - m &lt;
+n</span>. <span class="math inline">\square</span></p>
 </div>
 <div class="section level2">
 <h2 id="exact-mean">4. Exact mean<a class="anchor" aria-label="anchor" href="#exact-mean"></a>
@@ -156,37 +156,37 @@ n</span>. <span class="math inline">{\square</span></p>
 <p><strong>Theorem 1 (mean).</strong> With the notation of Section
 2,</p>
 <p><span class="math display">
-{\mathbb{E}\big[G_S(r)\big] \;=\; \frac{1}{N} \sum_{p=1}^{N}
+\mathbb{E}\big[G_S(r)\big] \;=\; \frac{1}{N} \sum_{p=1}^{N}
   \Big( 1 - T_{N-1,\,n-1}\big(m_p(r)\big) \Big).
 </span></p>
 <p><em>Proof.</em> By linearity and the decomposition of Section 2,</p>
 <p><span class="math display">
-{\mathbb{E}[G_S(r)] = \frac{1}{n} \sum_{p=1}^{N} \Pr(X_p = 1).
+\mathbb{E}[G_S(r)] = \frac{1}{n} \sum_{p=1}^{N} \Pr(X_p = 1).
 </span></p>
-<p>Fix <span class="math inline">{p</span>. Since <span class="math inline">{\Pr(p \in S) = n/N</span>, the multiplication rule
+<p>Fix <span class="math inline">p</span>. Since <span class="math inline">\Pr(p \in S) = n/N</span>, the multiplication rule
 gives</p>
 <p><span class="math display">
-{\Pr(X_p = 1) = \frac{n}{N}\,
+\Pr(X_p = 1) = \frac{n}{N}\,
   \Pr\!\left(A_p(r) \cap S = \emptyset \,\middle|\, p \in S\right).
 </span></p>
-<p>Conditional on <span class="math inline">{p \in S</span>, the
-remaining members of <span class="math inline">{S</span> form a uniform
-<span class="math inline">{(n-1)</span>-subset of the <span class="math inline">{N-1</span> locations in <span class="math inline">{X \setminus \{p\}</span>, and <span class="math inline">{A_p(r)</span> is a fixed subset of that ground set
-with <span class="math inline">{m_p</span> elements. Lemma 1 therefore
-gives</p>
+<p>Conditional on <span class="math inline">p \in S</span>, the
+remaining members of <span class="math inline">S</span> form a uniform
+<span class="math inline">(n-1)</span>-subset of the <span class="math inline">N-1</span> locations in <span class="math inline">X
+\setminus \{p\}</span>, and <span class="math inline">A_p(r)</span> is a
+fixed subset of that ground set with <span class="math inline">m_p</span> elements. Lemma 1 therefore gives</p>
 <p><span class="math display">
-{\Pr\!\left(A_p(r) \cap S = \emptyset \,\middle|\, p \in S\right)
+\Pr\!\left(A_p(r) \cap S = \emptyset \,\middle|\, p \in S\right)
   = T_{N-1,\,n-1}(m_p).
 </span></p>
-<p>Substituting and using <span class="math inline">{(n/N)\cdot(1/n) =
-1/N</span> completes the proof. <span class="math inline">{\square</span></p>
+<p>Substituting and using <span class="math inline">(n/N)\cdot(1/n) =
+1/N</span> completes the proof. <span class="math inline">\square</span></p>
 <p>Two immediate consequences are worth recording.</p>
 <ul>
 <li>The mean is <strong>sample-specific</strong>: it depends on the
-observed locations through the neighbour counts <span class="math inline">{m_p(r)</span> alone.</li>
+observed locations through the neighbour counts <span class="math inline">m_p(r)</span> alone.</li>
 <li>It never depends on which locations happen to carry the mark, only
-on <span class="math inline">{n</span>; relabelling the marks leaves
-<span class="math inline">{\mathbb{E}[G_S(r)]</span> unchanged.</li>
+on <span class="math inline">n</span>; relabelling the marks leaves
+<span class="math inline">\mathbb{E}[G_S(r)]</span> unchanged.</li>
 </ul>
 </div>
 <div class="section level2">
@@ -194,53 +194,53 @@ on <span class="math inline">{n</span>; relabelling the marks leaves
 </h2>
 <p>For the variance we need both marginal and joint probabilities.</p>
 <p><strong>Lemma 2 (pair inclusion).</strong> For distinct locations
-<span class="math inline">{p, q</span>,</p>
+<span class="math inline">p, q</span>,</p>
 <p><span class="math display">
-{\Pr(p \in S,\; q \in S) = \frac{n(n-1)}{N(N-1)} \;=:\; c_2 .
+\Pr(p \in S,\; q \in S) = \frac{n(n-1)}{N(N-1)} \;=:\; c_2 .
 </span></p>
-<p><em>Proof.</em> There are <span class="math inline">{\binom{N}{n}</span> equally likely marked sets;
-those containing both <span class="math inline">{p</span> and <span class="math inline">{q</span> number <span class="math inline">{\binom{N-2}{n-2}</span>. The ratio is <span class="math inline">{n(n-1)/[N(N-1)]</span>. <span class="math inline">{\square</span></p>
-<p><strong>Lemma 3 (joint emptiness).</strong> Let <span class="math inline">{p \neq q</span> and suppose <span class="math inline">{\|x_p - x_q\| &gt; r</span>, so that <span class="math inline">{q \notin A_p(r)</span> and <span class="math inline">{p \notin A_q(r)</span>. Write <span class="math inline">{w_{pq} = |A_p(r) \cap A_q(r)|</span>. Then</p>
+<p><em>Proof.</em> There are <span class="math inline">\binom{N}{n}</span> equally likely marked sets;
+those containing both <span class="math inline">p</span> and <span class="math inline">q</span> number <span class="math inline">\binom{N-2}{n-2}</span>. The ratio is <span class="math inline">n(n-1)/[N(N-1)]</span>. <span class="math inline">\square</span></p>
+<p><strong>Lemma 3 (joint emptiness).</strong> Let <span class="math inline">p \neq q</span> and suppose <span class="math inline">\|x_p - x_q\| &gt; r</span>, so that <span class="math inline">q \notin A_p(r)</span> and <span class="math inline">p \notin A_q(r)</span>. Write <span class="math inline">w_{pq} = |A_p(r) \cap A_q(r)|</span>. Then</p>
 <p><span class="math display">
-{\Pr\!\left(A_p \cap S = A_q \cap S = \emptyset
+\Pr\!\left(A_p \cap S = A_q \cap S = \emptyset
   \,\middle|\, p, q \in S\right)
   = T_{N-2,\,n-2}(m_p) + T_{N-2,\,n-2}(m_q)
     - T_{N-2,\,n-2}\!\left(m_p + m_q - w_{pq}\right).
 </span></p>
-<p><em>Proof.</em> Conditional on <span class="math inline">{p, q \in
-S</span>, the other marked locations form a uniform <span class="math inline">{(n-2)</span>-subset of the remaining <span class="math inline">{N-2</span> locations. Both <span class="math inline">{A_p(r)</span> and <span class="math inline">{A_q(r)</span> are fixed subsets of that ground set,
-of sizes <span class="math inline">{m_p</span> and <span class="math inline">{m_q</span>, with intersection of size <span class="math inline">{w_{pq}</span>. The event that <span class="math inline">{S</span> meets neither set is the complement of
-“meets <span class="math inline">{A_p</span>” or “meets <span class="math inline">{A_q</span>”, and the union has size <span class="math inline">{m_p + m_q - w_{pq}</span>. Applying Lemma 1 to each
-of the three sets gives the stated expression. <span class="math inline">{\square</span></p>
+<p><em>Proof.</em> Conditional on <span class="math inline">p, q \in
+S</span>, the other marked locations form a uniform <span class="math inline">(n-2)</span>-subset of the remaining <span class="math inline">N-2</span> locations. Both <span class="math inline">A_p(r)</span> and <span class="math inline">A_q(r)</span> are fixed subsets of that ground set,
+of sizes <span class="math inline">m_p</span> and <span class="math inline">m_q</span>, with intersection of size <span class="math inline">w_{pq}</span>. The event that <span class="math inline">S</span> meets neither set is the complement of
+“meets <span class="math inline">A_p</span>” or “meets <span class="math inline">A_q</span>”, and the union has size <span class="math inline">m_p + m_q - w_{pq}</span>. Applying Lemma 1 to each
+of the three sets gives the stated expression. <span class="math inline">\square</span></p>
 <p>Combining Lemmas 2 and 3,</p>
 <p><span class="math display">
-{\mathbb{E}[X_p X_q] =
+\mathbb{E}[X_p X_q] =
 \begin{cases}
-c_2, &amp; \|x_p - x_q\| \le r,\\[4pt]
+c_2, &amp; \|x_p - x_q\| \le r,\\\\
 c_2\Big(1 - T_{N-2,n-2}(m_p) - T_{N-2,n-2}(m_q)
    + T_{N-2,n-2}(m_p + m_q - w_{pq})\Big), &amp; \|x_p - x_q\| &gt; r.
 \end{cases}
 </span></p>
-<p>The first case is immediate: if <span class="math inline">{q</span>
-itself lies within distance <span class="math inline">{r</span> of <span class="math inline">{p</span>, then selecting both already guarantees
+<p>The first case is immediate: if <span class="math inline">q</span>
+itself lies within distance <span class="math inline">r</span> of <span class="math inline">p</span>, then selecting both already guarantees
 that each has a neighbour, so the conditional probability of two hits is
 one.</p>
 <p><strong>Theorem 2 (variance).</strong></p>
 <p><span class="math display">
-{\mathrm{Var}\big(G_S(r)\big) \;=\; \frac{1}{n^2}
+\mathrm{Var}\big(G_S(r)\big) \;=\; \frac{1}{n^2}
   \left[ \sum_{p=1}^{N} e_p (1 - e_p)
        + 2 \sum_{p &lt; q} \big( f_{pq} - e_p\, e_q \big) \right],
 </span></p>
-<p>where <span class="math inline">{e_p = \mathbb{E}[X_p] = (n/N)\big(1
-- T_{N-1,n-1}(m_p)\big)</span> and <span class="math inline">{f_{pq} =
+<p>where <span class="math inline">e_p = \mathbb{E}[X_p] = (n/N)\big(1 -
+T_{N-1,n-1}(m_p)\big)</span> and <span class="math inline">f_{pq} =
 \mathbb{E}[X_p X_q]</span> is given above.</p>
 <p><em>Proof.</em> Expand the square of the sum:</p>
 <p><span class="math display">
-{n^2 \,\mathrm{Var}(G_S) = \sum_p \mathrm{Var}(X_p)
+n^2 \,\mathrm{Var}(G_S) = \sum_p \mathrm{Var}(X_p)
   + 2\sum_{p&lt;q} \big(\mathbb{E}[X_p X_q] - e_p e_q\big),
 </span></p>
-<p>because the indicators are Bernoulli, so <span class="math inline">{\mathrm{Var}(X_p) = e_p(1-e_p)</span>, and
-covariance is bilinear. <span class="math inline">{\square</span></p>
+<p>because the indicators are Bernoulli, so <span class="math inline">\mathrm{Var}(X_p) = e_p(1-e_p)</span>, and
+covariance is bilinear. <span class="math inline">\square</span></p>
 <p>The result is <strong>exact</strong> for every finite sample: no
 asymptotic approximation, no independence assumption and no simulation
 are used. The only numerical input is the avoidance table, computed in
@@ -249,31 +249,31 @@ log space.</p>
 <div class="section level2">
 <h2 id="computational-cost">6. Computational cost<a class="anchor" aria-label="anchor" href="#computational-cost"></a>
 </h2>
-<p>Computing all <span class="math inline">{m_p(r)</span> costs one pass
-over the <span class="math inline">{\binom{N}{2}</span> pairs per
-radius. The double sum has one term per pair as well, but each needs the
-intersection size <span class="math inline">{w_{pq} = |A_p(r) \cap
-A_q(r)|</span>. Storing each <span class="math inline">{A_p(r)</span> as
-a packed bit set of <span class="math inline">{\lceil N/64\rceil</span>
-machine words and using a population count makes each intersection <span class="math inline">{O(N/64)</span> rather than <span class="math inline">{O(N)</span>, so the total work is</p>
+<p>Computing all <span class="math inline">m_p(r)</span> costs one pass
+over the <span class="math inline">\binom{N}{2}</span> pairs per radius.
+The double sum has one term per pair as well, but each needs the
+intersection size <span class="math inline">w_{pq} = |A_p(r) \cap
+A_q(r)|</span>. Storing each <span class="math inline">A_p(r)</span> as
+a packed bit set of <span class="math inline">\lceil N/64\rceil</span>
+machine words and using a population count makes each intersection <span class="math inline">O(N/64)</span> rather than <span class="math inline">O(N)</span>, so the total work is</p>
 <p><span class="math display">
-{O\!\left( R\, N^2 \,\big/\, 64 + R\, N^2 \right)
+O\!\left( R\, N^2 \,\big/\, 64 + R\, N^2 \right)
 </span></p>
-<p>for <span class="math inline">{R</span> radii. The original
+<p>for <span class="math inline">R</span> radii. The original
 implementation instead called a binomial coefficient routine inside the
 inner loop, which is what made the exact variance prohibitive for large
-<span class="math inline">{N</span>.</p>
+<span class="math inline">N</span>.</p>
 <p>If only a rough scale is needed, setting covariance = FALSE keeps the
-diagonal term and drops <span class="math inline">{2\sum (f_{pq} -
+diagonal term and drops <span class="math inline">2\sum (f_{pq} -
 e_pe_q)</span>; this is the “independent points” approximation. It costs
-<span class="math inline">{O(RN)</span> after the neighbour counts are
+<span class="math inline">O(RN)</span> after the neighbour counts are
 known.</p>
 </div>
 <div class="section level2">
 <h2 id="numerical-illustration">7. Numerical illustration<a class="anchor" aria-label="anchor" href="#numerical-illustration"></a>
 </h2>
 <p>The following small example checks Theorem 1 and Theorem 2 against
-<em>exhaustive enumeration</em> of all <span class="math inline">{\binom{10}{4} = 210</span> marked sets.</p>
+<em>exhaustive enumeration</em> of all <span class="math inline">\binom{10}{4} = 210</span> marked sets.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://acsoupir.github.io/PermFree-NearestNeighborG/">permfreeG</a></span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span>

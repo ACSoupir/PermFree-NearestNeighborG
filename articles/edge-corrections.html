@@ -69,68 +69,68 @@ univariate Gest”.</p>
 <div class="section level2">
 <h2 id="why-a-correction-is-needed">1. Why a correction is needed<a class="anchor" aria-label="anchor" href="#why-a-correction-is-needed"></a>
 </h2>
-<p>A point <span class="math inline">{p</span> near the boundary of the
+<p>A point <span class="math inline">p</span> near the boundary of the
 observation window has no neighbours outside it. Its observed
 nearest-neighbour distance is therefore biased upward, and the raw
-empirical <span class="math inline">{G</span> curve underestimates the
+empirical <span class="math inline">G</span> curve underestimates the
 true one. All corrections below trade a small amount of information for
 reduced bias; they are different estimators, not different null models.
 Crucially, under the mark-permutation null <em>the locations do not
 move</em>, so every correction’s null distribution is still induced
-purely by the random choice of <span class="math inline">{S</span>.</p>
+purely by the random choice of <span class="math inline">S</span>.</p>
 <p>Let</p>
 <p><span class="math display">
-{b_p = d(p, W^c)
+b_p = d(p, W^c)
 </span></p>
-<p>denote the distance from location <span class="math inline">{p</span>
-to the boundary of the window <span class="math inline">{W</span>, and
-let <span class="math inline">{u_p(r) = \mathbf{1}\{b_p &gt; r\}</span>
-mark the points that are still “at risk” at radius <span class="math inline">{r</span>.</p>
+<p>denote the distance from location <span class="math inline">p</span>
+to the boundary of the window <span class="math inline">W</span>, and
+let <span class="math inline">u_p(r) = \mathbf{1}\{b_p &gt; r\}</span>
+mark the points that are still “at risk” at radius <span class="math inline">r</span>.</p>
 </div>
 <div class="section level2">
 <h2 id="correction-none-raw">2. Correction none (raw)<a class="anchor" aria-label="anchor" href="#correction-none-raw"></a>
 </h2>
 <p>The raw estimator is exactly the statistic of Theorem 1,</p>
 <p><span class="math display">
-{\hat{G}_{\mathrm{none}}(r) = G_S(r)
+\hat{G}_{\mathrm{none}}(r) = G_S(r)
   = \frac{1}{n}\sum_{p\in S} X_p,
 </span></p>
 <p>so its null mean and variance are given exactly by Theorems 1 and 2.
 This is the only fully exact combination in the package: mean
-<strong>and</strong> variance, for both <span class="math inline">{G</span> and <span class="math inline">{G_{ij}</span>, with no approximation of any
+<strong>and</strong> variance, for both <span class="math inline">G</span> and <span class="math inline">G_{ij}</span>, with no approximation of any
 kind.</p>
 </div>
 <div class="section level2">
 <h2 id="correction-rs-reduced-sample-border">3. Correction rs (reduced sample / border)<a class="anchor" aria-label="anchor" href="#correction-rs-reduced-sample-border"></a>
 </h2>
-<p>Only points farther than <span class="math inline">{r</span> from the
+<p>Only points farther than <span class="math inline">r</span> from the
 boundary contribute:</p>
 <p><span class="math display">
-{\hat{G}_{\mathrm{rs}}(r) = \frac{Z(r)}{Y(r)}, \qquad
+\hat{G}_{\mathrm{rs}}(r) = \frac{Z(r)}{Y(r)}, \qquad
   Y(r) = \sum_{p=1}^{N} u_p(r)\,\mathbf{1}\{p \in S\}, \qquad
   Z(r) = \sum_{p=1}^{N} u_p(r)\, X_p .
 </span></p>
-<p>Write <span class="math inline">{\bar{u}(r) = N^{-1}\sum_p
-u_p(r)</span> and <span class="math inline">{a_p = 1 -
+<p>Write <span class="math inline">\bar{u}(r) = N^{-1}\sum_p
+u_p(r)</span> and <span class="math inline">a_p = 1 -
 T_{N-1,n-1}(m_p)</span>.</p>
-<p><strong>Mean of the denominator.</strong> <span class="math inline">{Y</span> is a simple random sample sum, so</p>
+<p><strong>Mean of the denominator.</strong> <span class="math inline">Y</span> is a simple random sample sum, so</p>
 <p><span class="math display">
-{\mathbb{E}[Y] = n\,\bar{u}, \qquad
+\mathbb{E}[Y] = n\,\bar{u}, \qquad
   \mathrm{Var}(Y) = \frac{n(N-n)}{N-1}\,\bar{u}\,(1-\bar{u}).
 </span></p>
 <p><strong>Mean of the numerator.</strong></p>
 <p><span class="math display">
-{\mathbb{E}[Z] = \frac{n}{N}\sum_{p=1}^{N} u_p\, a_p .
+\mathbb{E}[Z] = \frac{n}{N}\sum_{p=1}^{N} u_p\, a_p .
 </span></p>
-<p><strong>Second moment of the numerator.</strong> With <span class="math inline">{c_2 = n(n-1)/[N(N-1)]</span>,</p>
+<p><strong>Second moment of the numerator.</strong> With <span class="math inline">c_2 = n(n-1)/[N(N-1)]</span>,</p>
 <p><span class="math display">
-{\mathbb{E}[Z^2] = \sum_p u_p \frac{n}{N} a_p
+\mathbb{E}[Z^2] = \sum_p u_p \frac{n}{N} a_p
   + 2\sum_{p&lt;q} u_p u_q\, c_2\,
     g^{\mathrm{both}}_{pq},
 </span></p>
 <p>where, exactly as in Lemma 3,</p>
 <p><span class="math display">
-{g^{\mathrm{both}}_{pq} =
+g^{\mathrm{both}}_{pq} =
 \begin{cases}
 1, &amp; \|x_p-x_q\| \le r,\\
 1 - T_{N-2,n-2}(m_p) - T_{N-2,n-2}(m_q)
@@ -139,7 +139,7 @@ T_{N-1,n-1}(m_p)</span>.</p>
 </span></p>
 <p><strong>Cross moment.</strong></p>
 <p><span class="math display">
-{\mathbb{E}[ZY] = \sum_p u_p\frac{n}{N}a_p
+\mathbb{E}[ZY] = \sum_p u_p\frac{n}{N}a_p
   + 2\sum_{p&lt;q}u_pu_q\,c_2\,
     g^{\mathrm{one}}_{pq}, \qquad
   g^{\mathrm{one}}_{pq} =
@@ -148,65 +148,65 @@ T_{N-1,n-1}(m_p)</span>.</p>
 1 - T_{N-2,n-2}(m_p), &amp; \text{otherwise}.
 \end{cases}
 </span></p>
-<p>The reason for the two cases is that, conditional on both <span class="math inline">{p</span> and <span class="math inline">{q</span>
-being marked, a hit for <span class="math inline">{p</span> is already
-guaranteed when the two are within <span class="math inline">{r</span>;
-otherwise at least one of <span class="math inline">{p</span>’s own
+<p>The reason for the two cases is that, conditional on both <span class="math inline">p</span> and <span class="math inline">q</span>
+being marked, a hit for <span class="math inline">p</span> is already
+guaranteed when the two are within <span class="math inline">r</span>;
+otherwise at least one of <span class="math inline">p</span>’s own
 neighbours must be selected. Then</p>
 <p><span class="math display">
-{\mathrm{Cov}(Z,Y) = \mathbb{E}[ZY] - \mathbb{E}[Z]\mathbb{E}[Y].
+\mathrm{Cov}(Z,Y) = \mathbb{E}[ZY] - \mathbb{E}[Z]\mathbb{E}[Y].
 </span></p>
 <p><strong>Combining them.</strong> The package reports the ratio of
 expectations as the null mean and a first-order (delta method)
 variance:</p>
 <p><span class="math display">
-{\mathbb{E}\!\left[\hat{G}_{\mathrm{rs}}\right] \;\approx\;
+\mathbb{E}\!\left[\hat{G}_{\mathrm{rs}}\right] \;\approx\;
   \frac{\mu_Z}{\mu_Y},
 </span></p>
 <p><span class="math display">
-{\mathrm{Var}\!\left(\hat{G}_{\mathrm{rs}}\right) \;\approx\;
+\mathrm{Var}\!\left(\hat{G}_{\mathrm{rs}}\right) \;\approx\;
   \frac{V_Z}{\mu_Y^{2}}
   - \frac{2\mu_Z\,\mathrm{Cov}(Z,Y)}{\mu_Y^{3}}
   + \frac{\mu_Z^{2} V_Y}{\mu_Y^{4}},
 </span></p>
-<p>where <span class="math inline">{\mu_Z = \mathbb{E}[Z]</span>, <span class="math inline">{V_Z = \mathrm{Var}(Z)</span> and <span class="math inline">{\mu_Y, V_Y</span> are the denominator moments. The
-first two moments of <span class="math inline">{(Z, Y)</span> are
+<p>where <span class="math inline">\mu_Z = \mathbb{E}[Z]</span>, <span class="math inline">V_Z = \mathrm{Var}(Z)</span> and <span class="math inline">\mu_Y, V_Y</span> are the denominator moments. The
+first two moments of <span class="math inline">(Z, Y)</span> are
 <strong>exact</strong>; only the way they are combined into a mean and
-variance for the ratio is approximate, with bias of order <span class="math inline">{1/n</span>. Radii at which the population
-expectation <span class="math inline">{\mu_Y</span> vanishes give no
+variance for the ratio is approximate, with bias of order <span class="math inline">1/n</span>. Radii at which the population
+expectation <span class="math inline">\mu_Y</span> vanishes give no
 estimate, and are returned as NA.</p>
 </div>
 <div class="section level2">
 <h2 id="correction-han-hanisch">4. Correction han (Hanisch)<a class="anchor" aria-label="anchor" href="#correction-han-hanisch"></a>
 </h2>
 <p>The Hanisch estimator re-weights each event by the area still
-available at its radius. With bin edges <span class="math inline">{0 =
-r_0 &lt; r_1 &lt; \dots</span> and the eroded-window areas <span class="math inline">{a(r) = |W \ominus r|</span> (the area of the set of
-window points with boundary distance greater than <span class="math inline">{r</span>),</p>
+available at its radius. With bin edges <span class="math inline">0 =
+r_0 &lt; r_1 &lt; \dots</span> and the eroded-window areas <span class="math inline">a(r) = |W \ominus r|</span> (the area of the set of
+window points with boundary distance greater than <span class="math inline">r</span>),</p>
 <p><span class="math display">
-{\hat{G}_{\mathrm{han}}(r_k) =
+\hat{G}_{\mathrm{han}}(r_k) =
   \frac{\sum_{j\le k} h_j / a(r_j)}
        {\max_k \sum_{j\le k} h_j/a(r_j)},
 </span></p>
-<p>where <span class="math inline">{h_j</span> counts the uncensored
-events whose observed distance <span class="math inline">{o_p =
-\min(\mathrm{nnd}_p, b_p)</span> falls in bin <span class="math inline">{j</span>. Equivalently, <span class="math inline">{h_j</span> counts marked points with <span class="math inline">{\mathrm{nnd}_p \in (r_{j-1}, r_j]</span> and <span class="math inline">{\mathrm{nnd}_p \le b_p</span>.</p>
-<p>Under the null, conditional on <span class="math inline">{p \in
-S</span>, at least one selected neighbour within distance <span class="math inline">{t</span> has probability</p>
+<p>where <span class="math inline">h_j</span> counts the uncensored
+events whose observed distance <span class="math inline">o_p =
+\min(\mathrm{nnd}_p, b_p)</span> falls in bin <span class="math inline">j</span>. Equivalently, <span class="math inline">h_j</span> counts marked points with <span class="math inline">\mathrm{nnd}_p \in (r_{j-1}, r_j]</span> and <span class="math inline">\mathrm{nnd}_p \le b_p</span>.</p>
+<p>Under the null, conditional on <span class="math inline">p \in
+S</span>, at least one selected neighbour within distance <span class="math inline">t</span> has probability</p>
 <p><span class="math display">
-{F_p(t) = 1 - T_{N-1,n-1}\big(m_p(t)\big), \qquad
+F_p(t) = 1 - T_{N-1,n-1}\big(m_p(t)\big), \qquad
   m_p(t) = |\{q \neq p : \|x_p-x_q\| \le t\}|,
 </span></p>
 <p>so the <em>exact</em> expected bin counts are</p>
 <p><span class="math display">
-{\mathbb{E}[h_j] = \frac{n}{N}\sum_{p=1}^{N}
+\mathbb{E}[h_j] = \frac{n}{N}\sum_{p=1}^{N}
   \Big[ F_p\!\left(\min(r_j, b_p)\right)
       - F_p\!\left(\min(r_{j-1}, b_p)\right) \Big].
 </span></p>
 <p>The package computes these expectations exactly and then forms the
-corrected curve by plug-in, replacing each <span class="math inline">{h_j</span> with <span class="math inline">{\mathbb{E}[h_j]</span>. The expected bin counts are
+corrected curve by plug-in, replacing each <span class="math inline">h_j</span> with <span class="math inline">\mathbb{E}[h_j]</span>. The expected bin counts are
 exact; the curve assembled from them is a mean-field approximation,
-because <span class="math inline">{\mathbb{E}[f(H)] \neq
+because <span class="math inline">\mathbb{E}[f(H)] \neq
 f(\mathbb{E}H)</span> for the nonlinear normalisation. No closed-form
 variance is available, so csr_var is NA; use the permutation fallback if
 a null band for han is needed.</p>
@@ -215,36 +215,35 @@ a null band for han is needed.</p>
 <h2 id="correction-km-kaplan-meier">5. Correction km (Kaplan-Meier)<a class="anchor" aria-label="anchor" href="#correction-km-kaplan-meier"></a>
 </h2>
 <p>The Kaplan-Meier correction treats a point whose nearest neighbour
-lies beyond the boundary as right-censored at <span class="math inline">{b_p</span>. The observed variable is again <span class="math inline">{o_p = \min(\mathrm{nnd}_p, b_p)</span> with event
-indicator <span class="math inline">{\delta_p =
+lies beyond the boundary as right-censored at <span class="math inline">b_p</span>. The observed variable is again <span class="math inline">o_p = \min(\mathrm{nnd}_p, b_p)</span> with event
+indicator <span class="math inline">\delta_p =
 \mathbf{1}\{\mathrm{nnd}_p \le b_p\}</span>, and the product-limit
 estimate of the survival function is converted to a distribution
 function:</p>
 <p><span class="math display">
-{\hat{G}_{\mathrm{km}}(r_k) = 1 - \prod_{j\le k}
+\hat{G}_{\mathrm{km}}(r_k) = 1 - \prod_{j\le k}
   \left(1 - \frac{\mathrm{nco}_j}{d_j}\right),
 </span></p>
-<p>where <span class="math inline">{\mathrm{nco}_j</span> is the number
-of uncensored events in bin <span class="math inline">{j</span> (so
-<span class="math inline">{\mathbb{E}[\mathrm{nco}_j] =
-\mathbb{E}[h_j]</span> above) and <span class="math inline">{d_j</span>
-is the number at risk just before bin <span class="math inline">{j</span>.</p>
-<p>The expected histogram of <span class="math inline">{o_p</span> is
+<p>where <span class="math inline">\mathrm{nco}_j</span> is the number
+of uncensored events in bin <span class="math inline">j</span> (so <span class="math inline">\mathbb{E}[\mathrm{nco}_j] = \mathbb{E}[h_j]</span>
+above) and <span class="math inline">d_j</span> is the number at risk
+just before bin <span class="math inline">j</span>.</p>
+<p>The expected histogram of <span class="math inline">o_p</span> is
 exact as well:</p>
 <p><span class="math display">
-{\mathbb{E}[\mathrm{obs}_j] = \frac{n}{N}\sum_{p=1}^{N}
+\mathbb{E}[\mathrm{obs}_j] = \frac{n}{N}\sum_{p=1}^{N}
   \Big[ F_p(\min(r_j,b_p)) - F_p(\min(r_{j-1},b_p))
       + \mathbf{1}\{r_{j-1} &lt; b_p \le r_j\}\big(1 - F_p(b_p)\big)
 \Big].
 </span></p>
 <p>The last term is the censoring mass: when the boundary distance
-itself falls in bin <span class="math inline">{j</span>, then <span class="math inline">{o_p = b_p</span> exactly and no event can occur
+itself falls in bin <span class="math inline">j</span>, then <span class="math inline">o_p = b_p</span> exactly and no event can occur
 beyond it. Setting</p>
 <p><span class="math display">
-{d_k = \sum_{j \ge k} \mathbb{E}[\mathrm{obs}_j], \qquad
+d_k = \sum_{j \ge k} \mathbb{E}[\mathrm{obs}_j], \qquad
   s_k = 1 - \frac{\mathbb{E}[\mathrm{nco}_k]}{d_k},
 </span></p>
-<p>the reported mean-field curve is <span class="math inline">{1 -
+<p>the reported mean-field curve is <span class="math inline">1 -
 \prod_{j\le k} s_j</span>. As with han the bin expectations are exact
 and the product-limit assembly is a plug-in, so no closed-form variance
 is reported.</p>
@@ -301,13 +300,13 @@ for correction = “none” with method = “exact”.</p>
 <ul>
 <li>Because the window built automatically from a data frame is the
 <strong>convex hull</strong> of the points, many locations sit on or
-near its boundary and <span class="math inline">{b_p</span> can be very
+near its boundary and <span class="math inline">b_p</span> can be very
 small. Edge-corrected analyses are much more informative when the user
 supplies a meaningful window, for example by passing a spatstat ppp
 object with an explicit observation window.</li>
 <li>The reduced-sample estimator is undefined for radii larger than the
-largest <span class="math inline">{b_p</span>; those rows are returned
-as NA.</li>
+largest <span class="math inline">b_p</span>; those rows are returned as
+NA.</li>
 <li>The Hanisch curve is undefined once the eroded window has zero area,
 and those rows are NA as well.</li>
 <li>If a null band is required for han or km, use permute_gest with the

@@ -65,14 +65,14 @@
 <h2 id="what-the-package-does">What the package does<a class="anchor" aria-label="anchor" href="#what-the-package-does"></a>
 </h2>
 <p>permfreeG computes, in closed form, the mean and variance of the
-nearest-neighbour <span class="math inline">{G</span> function under the
+nearest-neighbour <span class="math inline">G</span> function under the
 mark-permutation null. Instead of simulating thousands of permutations,
 it evaluates the exact moments directly, so a null band and pointwise
 z-scores are available immediately.</p>
 <p>Two statistics are covered:</p>
 <ul>
-<li>exact_gest, the univariate nearest-neighbour <span class="math inline">{G</span>;</li>
-<li>exact_gcross, the bivariate cross nearest-neighbour <span class="math inline">{G_{ij}</span>.</li>
+<li>exact_gest, the univariate nearest-neighbour <span class="math inline">G</span>;</li>
+<li>exact_gcross, the bivariate cross nearest-neighbour <span class="math inline">G_{ij}</span>.</li>
 </ul>
 <p>Both accept a data frame with columns x, y (and optionally a mark
 column) or an existing spatstat ppp object.</p>
@@ -120,8 +120,8 @@ with their average.</p>
 <p>The returned object has one row per radius:</p>
 <ul>
 <li>r, the radius;</li>
-<li>theo, the theoretical CSR curve <span class="math inline">{G(r) = 1
-- e^{-\lambda\pi r^2}</span> using the observed intensity;</li>
+<li>theo, the theoretical CSR curve <span class="math inline">G(r) = 1 -
+e^{-\lambda\pi r^2}</span> using the observed intensity;</li>
 <li>obs, the observed curve for the marked points;</li>
 <li>csr_mean and csr_var, the exact null mean and variance from Theorems
 1-2;</li>
@@ -200,8 +200,8 @@ are exact.</p>
 <p>Two knobs trade accuracy for time:</p>
 <ul>
 <li>covariance = FALSE drops the off-diagonal covariance terms, keeping
-only <span class="math inline">{\sum_p e_p(1-e_p)/n^2</span>. This is
-the independent-points approximation and costs <span class="math inline">{O(RN)</span> once neighbour counts are known.</li>
+only <span class="math inline">\sum_p e_p(1-e_p)/n^2</span>. This is the
+independent-points approximation and costs <span class="math inline">O(RN)</span> once neighbour counts are known.</li>
 <li>method = “approx” is the same thing expressed through the public
 interface.</li>
 </ul>
@@ -264,7 +264,7 @@ intersection. The result is that the whole variance curve for N = 250 at
 <span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>N <span class="op">=</span> <span class="va">N</span>, radii <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span>, exact_seconds <span class="op">=</span> <span class="va">t_exact</span>,</span>
 <span>  approx_seconds <span class="op">=</span> <span class="va">t_approx</span><span class="op">)</span></span>
 <span><span class="co">#&gt;              N          radii  exact_seconds approx_seconds </span></span>
-<span><span class="co">#&gt;        250.000        151.000          0.037          0.010</span></span></code></pre></div>
+<span><span class="co">#&gt;        250.000        151.000          0.039          0.013</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="where-the-theory-lives">Where the theory lives<a class="anchor" aria-label="anchor" href="#where-the-theory-lives"></a>
