@@ -1,0 +1,45 @@
+Package: permfreeG
+Type: Package
+Title: Permutation-Free Exact Expectation and Variance for Nearest-Neighbour G Functions
+Version: 0.1.0
+Authors@R:
+    c(person("Alex C.", "Soupir", email = "alex.soupir@gmail.com",
+             role = c("aut", "cre")),
+      person("Brandon J.", "Manley", role = "ctb"),
+      person("Lauren C.", "Peres", role = "ctb"),
+      person("Brooke L.", "Fridley", role = "ctb"),
+      person("Julia", "Wrobel", role = "ctb"))
+Description: Closed-form analytical expressions for the mean and variance of the
+    sample-specific complete spatial randomness (CSR) null distribution of the
+    nearest-neighbour G function, for both the univariate (Gest) and bivariate
+    cross (Gcross) statistics.  The null model permutes marks among a fixed set of
+    spatial locations, giving exact permutation-free CSR curves with optional edge
+    corrections, plus a fast 'Rcpp' implementation of the variance calculation and
+    an exact-by-simulation permutation fallback.
+License: MIT + file LICENSE
+URL: https://acsoupir.github.io/PermFree-NearestNeighborG/,
+    https://github.com/ACSoupir/PermFree-NearestNeighborG
+BugReports: https://github.com/ACSoupir/PermFree-NearestNeighborG/issues
+Encoding: UTF-8
+Depends:
+    R (>= 4.1)
+LazyData: true
+Imports:
+    Rcpp,
+    stats,
+    utils,
+    parallel,
+    spatstat.geom,
+    spatstat.explore
+LinkingTo:
+    Rcpp
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    pkgdown,
+    bench
+VignetteBuilder:
+    knitr
+Config/testthat/edition: 3
+RoxygenNote: 7.3.3

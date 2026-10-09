@@ -1,0 +1,182 @@
+---
+title: "Getting started with permfreeG"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Getting started with permfreeG}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.width = 6.5,
+                      fig.height = 4)
+```
+
+## What the package does
+
+permfreeG computes, in closed form, the mean and variance of the
+nearest-neighbour \eqn{G} function under the mark-permutation null.  Instead of
+simulating thousands of permutations, it evaluates the exact moments directly,
+so a null band and pointwise z-scores are available immediately.
+
+Two statistics are covered:
+
+* exact_gest, the univariate nearest-neighbour \eqn{G};
+* exact_gcross, the bivariate cross nearest-neighbour \eqn{G_{ij}}.
+
+Both accept a data frame with columns x, y (and optionally a mark column) or an
+existing spatstat ppp object.
+
+## Installation
+
+```{r install, eval = FALSE}
+# development version (the package lives on the dev branch)
+remotes::install_github("ACSoupir/PermFree-NearestNeighborG", ref = "dev",
+                        build_vignettes = TRUE)
+```
+
+On macOS, if your R toolchain picks up a non-Apple compiler from the PATH,
+prepend /usr/bin before installing, or place an appropriate ~/.R/Makevars in
+your home directory.
+
+## A first univariate example
+
+The package ships sim_nnG, a 30-point pattern with five marked points.  This is
+the small example in which all choose(30, 5) = 142506 marked subsets could be
+enumerated by hand; the closed form must agree with their average.
+
+```{r univariate, message = FALSE}
+suppressPackageStartupMessages(library(permfreeG))
+str(sim_nnG)
+
+radii <- seq(0, 1.2, by = 0.15)
+res <- exact_gest(sim_nnG, radii = radii, mark_col = "m", marks_i = "A")
+res
+res_df <- as.data.frame(res)
+```
+
+The returned object has one row per radius:
+
+* r, the radius;
+* theo, the theoretical CSR curve \eqn{G(r) = 1 - e^{-\lambda\pi r^2}} using the
+  observed intensity;
+* obs, the observed curve for the marked points;
+* csr_mean and csr_var, the exact null mean and variance from Theorems 1-2;
+* z and p_value, pointwise departures of the observed curve from the exact null.
+
+```{r univariate-plot, fig.height = 4, fig.alt = "Observed G curve with the exact CSR mean and a one standard deviation band."}
+plot(res)
+```
+
+Because csr_var is exact rather than estimated, z has its usual interpretation
+at every radius simultaneously; no permutation noise inflates it.
+
+## Bivariate cross G
+
+```{r bivariate, message = FALSE}
+set.seed(7)
+d3 <- data.frame(x = stats::runif(60), y = stats::runif(60),
+                 m = sample(c("A", "B", "C"), 60, replace = TRUE))
+gc <- exact_gcross(d3, radii = seq(0, 1.5, by = 0.15), mark_col = "m",
+                   marks_i = "A", marks_j = "B")
+gc
+```
+
+Passing the same mark twice (marks_i == marks_j) reduces to exact_gest with
+n equal to the observed count of that mark.
+
+## Edge corrections
+
+Corrections are selected with correction.  The raw curve is exact; the border
+(reduced sample) option uses a delta method built from exact moments, and han/km
+are mean-field curves with no closed-form variance.
+
+```{r corrections}
+pp <- spatstat.geom::ppp(d3$x, d3$y,
+                         window = spatstat.geom::owin(c(0, 1), c(0, 1)),
+                         marks = d3$m)
+rr <- seq(0, 0.4, by = 0.05)
+
+none_cur <- as.data.frame(exact_gest(pp, radii = rr, marks_i = "A"))
+rs_cur   <- as.data.frame(exact_gest(pp, radii = rr, marks_i = "A",
+                                     correction = "rs"))
+data.frame(r        = none_cur$r,
+           raw_mean = round(none_cur$csr_mean, 4),
+           rs_mean  = round(rs_cur$csr_mean, 4),
+           raw_var  = signif(none_cur$csr_var, 3),
+           rs_var   = signif(rs_cur$csr_var, 3))
+```
+
+The border correction is undefined beyond the largest boundary distance; those
+rows are NA.  See the "Supplement: edge corrections" vignette for the full
+derivation of each option, including which parts are exact.
+
+## Approximations when speed matters
+
+Two knobs trade accuracy for time:
+
+* covariance = FALSE drops the off-diagonal covariance terms, keeping only
+  \eqn{\sum_p e_p(1-e_p)/n^2}.  This is the independent-points approximation and
+  costs \eqn{O(RN)} once neighbour counts are known.
+* method = "approx" is the same thing expressed through the public interface.
+
+```{r approx}
+fast <- exact_gest(sim_nnG, radii = radii, mark_col = "m", marks_i = "A",
+                   method = "approx")
+c(exact_variance    = sum(res_df$csr_var),
+  approx_variance   = sum(as.data.frame(fast)$csr_var))
+```
+
+## Permutation fallback
+
+Nothing is hidden: the exact moments can always be checked against a real
+permutation run.  permute_gest and permute_gcross draw uniform subsets (or
+disjoint label permutations) and recompute the statistic, optionally in
+parallel.
+
+```{r permutation, message = FALSE}
+set.seed(1)
+pm <- permute_gest(sim_nnG, radii = radii, mark_col = "m", marks_i = "A",
+                   nsim = 200)
+data.frame(r          = radii,
+           exact_mean = round(res_df$csr_mean, 4),
+           perm_mean  = round(pm$mean, 4),
+           exact_var  = signif(res_df$csr_var, 3),
+           perm_var   = signif(pm$var, 3))
+```
+
+The two agree up to Monte Carlo error.  The permutation route is the reference
+implementation, and it also supplies a variance for the han/km corrections,
+where no closed form is available.
+
+## Scaling
+
+The exact engine stores neighbour sets as packed bit sets, so each pair
+intersection costs one word of population count rather than a set intersection.
+The result is that the whole variance curve for N = 250 at 151 radii takes a
+fraction of a second.
+
+```{r scaling}
+set.seed(1)
+N <- 250
+x <- stats::runif(N); y <- stats::runif(N)
+grid <- seq(0, 1.5, length.out = 151)
+
+t_exact <- system.time(
+  permfreeG:::csr_uni_moments_cpp(x, y, grid, 50L))[["elapsed"]]
+t_approx <- system.time(
+  permfreeG:::csr_uni_moments_cpp(x, y, grid, 50L,
+                                  covariance = FALSE))[["elapsed"]]
+c(N = N, radii = length(grid), exact_seconds = t_exact,
+  approx_seconds = t_approx)
+```
+
+## Where the theory lives
+
+* "Derivation: univariate Gest" proves Theorems 1-2 with full proofs.
+* "Derivation: bivariate Gcross" proves the conditioning lemma and Theorems 3-4.
+* "Supplement: edge corrections" derives none, rs, han and km.
+
+No code is required to follow any of the three.

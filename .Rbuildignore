@@ -1,0 +1,14 @@
+^\.git$
+^\.github$
+^data-raw$
+^tools$
+^docs$
+^_pkgdown\.yml$
+^\.DS_Store$
+^\.gitignore$
+^.*\.Rproj$
+^\.Rproj\.user$
+^2025\..*\.pdf$
+^.*\.rds$
+^\.cache$
+^docs$

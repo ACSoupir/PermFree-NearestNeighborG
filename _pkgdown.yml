@@ -1,0 +1,38 @@
+url: https://acsoupir.github.io/PermFree-NearestNeighborG/
+template:
+  bootstrap: 5
+development:
+  mode: auto
+reference:
+- title: Exact permutation-free CSR
+  desc: Main entry points. These compute the exact null mean and variance.
+  contents:
+  - exact_gest
+  - exact_gcross
+- title: Permutation reference
+  desc: Exact-by-simulation fallbacks, used to validate the closed forms.
+  contents:
+  - permute_gest
+  - permute_gcross
+- title: Result object methods
+  contents:
+  - nnG-methods
+- title: Example data
+  contents:
+  - sim_nnG
+- title: Internal helpers
+  desc: Not exported; used inside the package and by the test suite.
+  contents:
+  - has_keyword("internal")
+articles:
+- title: Derivations
+  desc: Complete proofs; no code required.
+  contents:
+  - derivation-univariate
+  - derivation-bivariate
+- title: Edge corrections
+  contents:
+  - edge-corrections
+- title: Usage
+  contents:
+  - getting-started
