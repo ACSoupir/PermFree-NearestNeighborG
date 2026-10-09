@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Derivation: exact mean and variance of the bivariate cross nearest-neighbour G function • permfreeG</title>
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- katex math --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><script src="../katex-auto.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
@@ -61,98 +62,180 @@
     
     
 <p>This vignette proves the closed-form mean and variance of the
-bivariate cross nearest-neighbour statistic under a disjoint
-label-permutation null, again without reference to code. The univariate
-result of the companion vignette is recovered as the special case .</p>
+bivariate cross nearest-neighbour statistic <span class="math inline">{G_{ij}</span> under a disjoint label-permutation
+null, again without reference to code. The univariate result of the
+companion vignette is recovered as the special case <span class="math inline">{i = j</span>.</p>
 <div class="section level2">
 <h2 id="the-null-model">1. The null model<a class="anchor" aria-label="anchor" href="#the-null-model"></a>
 </h2>
-<p>The locations are fixed. Two marks (or two phenotypes) and are
-present with observed counts and , and no location carries both marks.
-The bivariate CSR null permutes the labels among the locations while
-preserving those counts, so</p>
-<p>and, conditionally on ,</p>
-<p>This requires , which the package checks.</p>
-<p>The statistic measures how close type- points are to type-
-points,</p>
-<p>with the convention that an empty minimum is (so a type- point with
-no type- point within contributes zero).</p>
+<p>The locations <span class="math inline">{X = \{x_1, \dots,
+x_N\}</span> are fixed. Two marks (or two phenotypes) <span class="math inline">{i</span> and <span class="math inline">{j</span>
+are present with observed counts <span class="math inline">{n_i</span>
+and <span class="math inline">{n_j</span>, and no location carries both
+marks. The bivariate CSR null permutes the labels among the locations
+while preserving those counts, so</p>
+<p><span class="math display">
+{S_i \sim \mathrm{Uniform}\{T \subset X : |T| = n_i\},
+</span></p>
+<p>and, conditionally on <span class="math inline">{S_i</span>,</p>
+<p><span class="math display">
+{S_j \sim \mathrm{Uniform}\{T \subset X \setminus S_i : |T| = n_j\}.
+</span></p>
+<p>This requires <span class="math inline">{n_i + n_j \le N</span>,
+which the package checks.</p>
+<p>The statistic measures how close type-<span class="math inline">{i</span> points are to type-<span class="math inline">{j</span> points,</p>
+<p><span class="math display">
+{G_{ij}(r) \;=\; \frac{1}{n_i} \sum_{p \in S_i}
+  \mathbf{1}\!\left\{ d(p, S_j) \le r \right\},
+  \qquad d(p, S_j) = \min_{q \in S_j} \|x_p - x_q\|,
+</span></p>
+<p>with the convention that an empty minimum is <span class="math inline">{+\infty</span> (so a type-<span class="math inline">{i</span> point with no type-<span class="math inline">{j</span> point within <span class="math inline">{r</span> contributes zero).</p>
 </div>
 <div class="section level2">
 <h2 id="indicator-decomposition-and-the-conditioning-lemma">2. Indicator decomposition and the conditioning lemma<a class="anchor" aria-label="anchor" href="#indicator-decomposition-and-the-conditioning-lemma"></a>
 </h2>
-<p>Put, for each location ,</p>
+<p>Put, for each location <span class="math inline">{p</span>,</p>
+<p><span class="math display">
+{A_p(r) = \{ q \neq p : \|x_p - x_q\| \le r\}, \qquad m_p(r) = |A_p(r)|,
+</span></p>
 <p>and</p>
-<p>Then . Unlike the univariate case, the indicator involves
+<p><span class="math display">
+{Y_p \;=\; \mathbf{1}\{p \in S_i\} \cdot
+  \mathbf{1}\!\left\{A_p(r) \cap S_j \neq \emptyset\right\}.
+</span></p>
+<p>Then <span class="math inline">{G_{ij}(r) = n_i^{-1} \sum_p
+Y_p</span>. Unlike the univariate case, the indicator involves
 <em>both</em> random sets.</p>
-<p><strong>Lemma 4 (conditional uniformity).</strong> Let with , and
-condition on the event . Then is uniform over the -subsets of . In
-particular, for any fixed with ,</p>
-<p><em>Proof.</em> The joint law of is invariant under permutations of
-that preserve the marks, so it can be generated by ordering uniformly at
-random and taking the first locations as and the next as . Conditional
-on the set of locations occupying the first positions being exactly ,
-the remaining locations are in a uniformly random order, so positions
-form a uniform -subset of . Avoidance is then Lemma 1 applied to that
-ground set. </p>
+<p><strong>Lemma 4 (conditional uniformity).</strong> Let <span class="math inline">{T \subseteq X</span> with <span class="math inline">{|T| = t</span>, and condition on the event <span class="math inline">{T \subseteq S_i</span>. Then <span class="math inline">{S_j</span> is uniform over the <span class="math inline">{n_j</span>-subsets of <span class="math inline">{X
+\setminus T</span>. In particular, for any fixed <span class="math inline">{M \subseteq X \setminus T</span> with <span class="math inline">{|M| = m</span>,</p>
+<p><span class="math display">
+{\Pr\!\left(S_j \cap M = \emptyset \,\middle|\, T \subseteq S_i\right)
+  \;=\; \frac{\binom{N-t-m}{n_j}}{\binom{N-t}{n_j}}
+  \;=\; T_{N-t,\,n_j}(m).
+</span></p>
+<p><em>Proof.</em> The joint law of <span class="math inline">{(S_i,
+S_j)</span> is invariant under permutations of <span class="math inline">{X</span> that preserve the marks, so it can be
+generated by ordering <span class="math inline">{X</span> uniformly at
+random and taking the first <span class="math inline">{n_i</span>
+locations as <span class="math inline">{S_i</span> and the next <span class="math inline">{n_j</span> as <span class="math inline">{S_j</span>. Conditional on the set of locations
+occupying the first <span class="math inline">{t</span> positions being
+exactly <span class="math inline">{T</span>, the remaining <span class="math inline">{N - t</span> locations are in a uniformly random
+order, so positions <span class="math inline">{t+1,\dots,t+n_j</span>
+form a uniform <span class="math inline">{n_j</span>-subset of <span class="math inline">{X\setminus T</span>. Avoidance is then Lemma 1
+applied to that ground set. <span class="math inline">{\square</span></p>
 </div>
 <div class="section level2">
 <h2 id="exact-mean">3. Exact mean<a class="anchor" aria-label="anchor" href="#exact-mean"></a>
 </h2>
 <p><strong>Theorem 3 (bivariate mean).</strong></p>
-<p><em>Proof.</em> By linearity, . For fixed ,</p>
-<p>Now , and Lemma 4 with (so ) and gives</p>
-<p>Multiplying by and dividing the sum by yields . </p>
-<p><strong>Remark 5 (the mean depends only on ).</strong> The type-
-count enters Theorem 3 only through the prefactor , so it cancels: the
-expected cross- curve is unchanged if changes, as long as , and hence
-the type- mark, is fixed. This asymmetry is intuitive: how many type-
-points there are does not change the chance that a given one finds a
-type- neighbour. It is also visible in the implementation, where only
-enters the avoidance table.</p>
+<p><span class="math display">
+{\mathbb{E}\big[G_{ij}(r)\big] \;=\; \frac{1}{N} \sum_{p=1}^{N}
+  \Big(1 - T_{N-1,\,n_j}\big(m_p(r)\big)\Big).
+</span></p>
+<p><em>Proof.</em> By linearity, <span class="math inline">{\mathbb{E}[G_{ij}(r)] = n_i^{-1} \sum_p
+\Pr(Y_p = 1)</span>. For fixed <span class="math inline">{p</span>,</p>
+<p><span class="math display">
+{\Pr(Y_p = 1) = \Pr(p \in S_i)\,
+  \Pr\!\left(A_p(r) \cap S_j = \emptyset\,\middle|\, p \in S_i\right).
+</span></p>
+<p>Now <span class="math inline">{\Pr(p\in S_i) = n_i/N</span>, and
+Lemma 4 with <span class="math inline">{T = \{p\}</span> (so <span class="math inline">{t = 1</span>) and <span class="math inline">{M =
+A_p(r) \subseteq X\setminus\{p\}</span> gives</p>
+<p><span class="math display">
+{\Pr\!\left(A_p(r) \cap S_j = \emptyset\,\middle|\, p\in S_i\right)
+  = T_{N-1,\,n_j}(m_p).
+</span></p>
+<p>Multiplying by <span class="math inline">{n_i/N</span> and dividing
+the sum by <span class="math inline">{n_i</span> yields <span class="math inline">{(1/N)\sum_p (1 - T_{N-1,n_j}(m_p))</span>. <span class="math inline">{\square</span></p>
+<p><strong>Remark 5 (the mean depends only on <span class="math inline">{n_j</span>).</strong> The type-<span class="math inline">{i</span> count <span class="math inline">{n_i</span> enters Theorem 3 only through the
+prefactor <span class="math inline">{1/N</span>, so it cancels: the
+expected cross-<span class="math inline">{G</span> curve is unchanged if
+<span class="math inline">{n_i</span> changes, as long as <span class="math inline">{n_j</span>, and hence the type-<span class="math inline">{j</span> mark, is fixed. This asymmetry is
+intuitive: how many type-<span class="math inline">{i</span> points
+there are does not change the chance that a given one finds a type-<span class="math inline">{j</span> neighbour. It is also visible in the
+implementation, where only <span class="math inline">{n_j</span> enters
+the avoidance table.</p>
 </div>
 <div class="section level2">
 <h2 id="exact-second-moments">4. Exact second moments<a class="anchor" aria-label="anchor" href="#exact-second-moments"></a>
 </h2>
 <p><strong>Lemma 6 (pair inclusion, bivariate).</strong></p>
-<p>which is Lemma 2 applied to the uniform -subset .</p>
+<p><span class="math display">
+{\Pr(p \in S_i,\; q \in S_i) = \frac{n_i(n_i-1)}{N(N-1)} \;=:\;
+c_2^{(i)},
+</span></p>
+<p>which is Lemma 2 applied to the uniform <span class="math inline">{n_i</span>-subset <span class="math inline">{S_i</span>.</p>
 <p>For the joint probability of two hits, define the <em>punctured</em>
 neighbour sets</p>
-<p>These are the neighbours of and other than each other, so both are
-subsets of the ground set used by Lemma 4 with , . Write</p>
-<p>where , and .</p>
+<p><span class="math display">
+{A_p^{\ast} = A_p(r) \setminus \{q\}, \qquad
+      A_q^{\ast} = A_q(r) \setminus \{p\}.
+</span></p>
+<p>These are the neighbours of <span class="math inline">{p</span> and
+<span class="math inline">{q</span> other than each other, so both are
+subsets of the ground set <span class="math inline">{X \setminus
+\{p,q\}</span> used by Lemma 4 with <span class="math inline">{T = \{p,
+q\}</span>, <span class="math inline">{t = 2</span>. Write</p>
+<p><span class="math display">
+{u_{pq} \;=\; \big| A_p^{\ast} \cup A_q^{\ast} \big|
+             \;=\; m_p^{\ast} + m_q^{\ast} - w_{pq},
+</span></p>
+<p>where <span class="math inline">{m_p^{\ast} = |A_p^{\ast}|</span>,
+<span class="math inline">{m_q^{\ast}=|A_q^{\ast}|</span> and <span class="math inline">{w_{pq} = |A_p(r) \cap A_q(r)|</span>.</p>
 <p><strong>Lemma 7 (two hits).</strong></p>
-<p><em>Proof.</em> requires , of probability , and then that meets both
-and . Conditional on , Lemma 4 with says is uniform over the -subsets of
-. On that ground set the relevant neighbour sets are exactly and . By
-inclusion–exclusion,</p>
-<p>which is the stated bracket. </p>
+<p><span class="math display">
+{\mathbb{E}[Y_p Y_q] = c_2^{(i)}\,
+  \Big(1 - T_{N-2,\,n_j}(m_p^{\ast}) - T_{N-2,\,n_j}(m_q^{\ast})
+       + T_{N-2,\,n_j}(u_{pq})\Big).
+</span></p>
+<p><em>Proof.</em> <span class="math inline">{\{Y_p = Y_q = 1\}</span>
+requires <span class="math inline">{p, q \in S_i</span>, of probability
+<span class="math inline">{c_2^{(i)}</span>, and then that <span class="math inline">{S_j</span> meets both <span class="math inline">{A_p(r)</span> and <span class="math inline">{A_q(r)</span>. Conditional on <span class="math inline">{p,q\in S_i</span>, Lemma 4 with <span class="math inline">{T = \{p,q\}</span> says <span class="math inline">{S_j</span> is uniform over the <span class="math inline">{n_j</span>-subsets of <span class="math inline">{X
+\setminus \{p,q\}</span>. On that ground set the relevant neighbour sets
+are exactly <span class="math inline">{A_p^{\ast}</span> and <span class="math inline">{A_q^{\ast}</span>. By inclusion–exclusion,</p>
+<p><span class="math display">
+{\Pr(\text{both met}) =
+\frac{\binom{N-2-m_p^{\ast}}{n_j}}{\binom{N-2}{n_j}}
+  \!+\! \frac{\binom{N-2-m_q^{\ast}}{n_j}}{\binom{N-2}{n_j}}
+  \!-\! \frac{\binom{N-2-u_{pq}}{n_j}}{\binom{N-2}{n_j}},
+</span></p>
+<p>which is the stated bracket. <span class="math inline">{\square</span></p>
 <p>Note that, unlike the univariate case, there is no special short-cut
-when : the hit condition concerns , not . The general formula already
-covers that situation, because then so , and the corresponding avoidance
-probability decreases accordingly.</p>
+when <span class="math inline">{\|x_p - x_q\| \le r</span>: the hit
+condition concerns <span class="math inline">{S_j</span>, not <span class="math inline">{S_i</span>. The general formula already covers that
+situation, because then <span class="math inline">{q \in A_p(r)</span>
+so <span class="math inline">{m_p^{\ast} = m_p - 1</span>, and the
+corresponding avoidance probability decreases accordingly.</p>
 <p><strong>Theorem 4 (bivariate variance).</strong></p>
-<p>with and from Lemma 7.</p>
-<p><em>Proof.</em> Identical to Theorem 2, using the decomposition .
-</p>
+<p><span class="math display">
+{\mathrm{Var}\big(G_{ij}(r)\big) \;=\; \frac{1}{n_i^2}
+  \left[\sum_{p=1}^{N} e_p(1 - e_p)
+      + 2\sum_{p&lt;q}\big(f_{pq} - e_p e_q\big)\right],
+</span></p>
+<p>with <span class="math inline">{e_p = (n_i/N)(1 -
+T_{N-1,n_j}(m_p))</span> and <span class="math inline">{f_{pq}</span>
+from Lemma 7.</p>
+<p><em>Proof.</em> Identical to Theorem 2, using the decomposition <span class="math inline">{G_{ij} = n_i^{-1}\sum_p Y_p</span>. <span class="math inline">{\square</span></p>
 </div>
 <div class="section level2">
 <h2 id="the-diagonal-case">5. The diagonal case<a class="anchor" aria-label="anchor" href="#the-diagonal-case"></a>
 </h2>
-<p>When the two marks coincide, the natural reading of is the univariate
-nearest-neighbour statistic computed on a uniform subset of size : there
-is no independent . The package implements by delegating to the
-univariate estimator with , and Theorems 1–2 then apply verbatim. This
-is the correct reduction because in the univariate problem the neighbour
-of a marked point may be any other marked point, whereas in Lemma 7 and
-are disjoint.</p>
+<p>When the two marks coincide, the natural reading of <span class="math inline">{G_{ii}</span> is the univariate nearest-neighbour
+statistic computed on a uniform subset of size <span class="math inline">{n_i</span>: there is no independent <span class="math inline">{S_j</span>. The package implements <span class="math inline">{G_{ii}</span> by delegating to the univariate
+estimator with <span class="math inline">{n = n_i</span>, and Theorems
+1–2 then apply verbatim. This is the correct reduction because in the
+univariate problem the neighbour of a marked point may be any other
+marked point, whereas in Lemma 7 <span class="math inline">{S_j</span>
+and <span class="math inline">{S_i</span> are disjoint.</p>
 </div>
 <div class="section level2">
 <h2 id="numerical-illustration">6. Numerical illustration<a class="anchor" aria-label="anchor" href="#numerical-illustration"></a>
 </h2>
 <p>For small patterns the bivariate null can be enumerated exhaustively:
-for each of the choices of , run over all choices of from the remaining
-locations. With , and this is configurations.</p>
+for each of the <span class="math inline">{\binom{N}{n_i}</span> choices
+of <span class="math inline">{S_i</span>, run over all <span class="math inline">{\binom{N-n_i}{n_j}</span> choices of <span class="math inline">{S_j</span> from the remaining locations. With <span class="math inline">{N = 10</span>, <span class="math inline">{n_i =
+4</span> and <span class="math inline">{n_j = 3</span> this is <span class="math inline">{\binom{10}{4}\binom{6}{3} = 210 \times 20 =
+4200</span> configurations.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://acsoupir.github.io/PermFree-NearestNeighborG/">permfreeG</a></span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">11</span><span class="op">)</span></span>
@@ -188,8 +271,8 @@ locations. With , and this is configurations.</p>
 <span><span class="co">#&gt;     max_mean_error max_variance_error </span></span>
 <span><span class="co">#&gt;       3.330669e-16       2.359224e-16</span></span></code></pre></div>
 <p>Again the errors are pure floating-point round-off.</p>
-<p>A direct check of Remark 5 is also immediate: changing while holding
-fixed leaves the exact mean unchanged.</p>
+<p>A direct check of Remark 5 is also immediate: changing <span class="math inline">{n_i</span> while holding <span class="math inline">{n_j</span> fixed leaves the exact mean
+unchanged.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pp</span> <span class="op">&lt;-</span> <span class="fu">spatstat.geom</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/spatstat.geom/man/ppp.html" class="external-link">ppp</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>,</span>
 <span>                         window <span class="op">=</span> <span class="fu">spatstat.geom</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/spatstat.geom/man/owin.html" class="external-link">owin</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>,</span>

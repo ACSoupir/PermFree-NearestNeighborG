@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Getting started with permfreeG • permfreeG</title>
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- katex math --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><script src="../katex-auto.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
@@ -64,14 +65,14 @@
 <h2 id="what-the-package-does">What the package does<a class="anchor" aria-label="anchor" href="#what-the-package-does"></a>
 </h2>
 <p>permfreeG computes, in closed form, the mean and variance of the
-nearest-neighbour function under the mark-permutation null. Instead of
-simulating thousands of permutations, it evaluates the exact moments
-directly, so a null band and pointwise z-scores are available
-immediately.</p>
+nearest-neighbour <span class="math inline">{G</span> function under the
+mark-permutation null. Instead of simulating thousands of permutations,
+it evaluates the exact moments directly, so a null band and pointwise
+z-scores are available immediately.</p>
 <p>Two statistics are covered:</p>
 <ul>
-<li>exact_gest, the univariate nearest-neighbour ;</li>
-<li>exact_gcross, the bivariate cross nearest-neighbour .</li>
+<li>exact_gest, the univariate nearest-neighbour <span class="math inline">{G</span>;</li>
+<li>exact_gcross, the bivariate cross nearest-neighbour <span class="math inline">{G_{ij}</span>.</li>
 </ul>
 <p>Both accept a data frame with columns x, y (and optionally a mark
 column) or an existing spatstat ppp object.</p>
@@ -119,7 +120,8 @@ with their average.</p>
 <p>The returned object has one row per radius:</p>
 <ul>
 <li>r, the radius;</li>
-<li>theo, the theoretical CSR curve using the observed intensity;</li>
+<li>theo, the theoretical CSR curve <span class="math inline">{G(r) = 1
+- e^{-\lambda\pi r^2}</span> using the observed intensity;</li>
 <li>obs, the observed curve for the marked points;</li>
 <li>csr_mean and csr_var, the exact null mean and variance from Theorems
 1-2;</li>
@@ -198,8 +200,8 @@ are exact.</p>
 <p>Two knobs trade accuracy for time:</p>
 <ul>
 <li>covariance = FALSE drops the off-diagonal covariance terms, keeping
-only . This is the independent-points approximation and costs once
-neighbour counts are known.</li>
+only <span class="math inline">{\sum_p e_p(1-e_p)/n^2</span>. This is
+the independent-points approximation and costs <span class="math inline">{O(RN)</span> once neighbour counts are known.</li>
 <li>method = “approx” is the same thing expressed through the public
 interface.</li>
 </ul>
